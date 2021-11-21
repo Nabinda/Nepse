@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nepse/bloc/nepse_index_chart/bloc.dart';
+import 'package:nepse/model/nepse_index_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 class CustomGraph extends StatefulWidget {
   const CustomGraph({Key? key}) : super(key: key);
 
@@ -10,68 +11,74 @@ class CustomGraph extends StatefulWidget {
 }
 
 class _CustomGraphState extends State<CustomGraph> {
-  late ZoomPanBehavior _zoomPanBehavior;
-
-  @override
+    @override
   void initState() {
-    _zoomPanBehavior = ZoomPanBehavior(
-        enablePinching: true,
-        zoomMode: ZoomMode.xy,
-        enablePanning: true);
     super.initState();
+    BlocProvider.of<NepseIndexBloc>(context).add(const FetchNepseIndex());
   }
-
-  List<_SalesData> data = [
-    _SalesData('Jan', 35),
-    _SalesData('Feb', 28),
-    _SalesData('Mar', 34),
-    _SalesData('Apr', 32),
-    _SalesData('May', 40),
-    _SalesData('Jun', 50),
-    _SalesData('July', 140),
-    _SalesData('Aug', 90),
-  ];
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      //Initialize the chart widget
-      SfCartesianChart(
-          zoomPanBehavior: _zoomPanBehavior,
-          palette: const <Color>[
-            Colors.teal,
-            Colors.orange,
-            Colors.brown
-          ],
-          primaryXAxis: CategoryAxis(),
-          //primaryYAxis: NumericAxis(isInversed: false),
-          // Chart title
-          title: ChartTitle(text: 'Half yearly sales analysis'),
-          // Enable legend
-          legend: Legend(isVisible: true),
-          // Enable tooltip
-          tooltipBehavior: TooltipBehavior(enable: true),
-          series: <ChartSeries<_SalesData, String>>[
-            LineSeries<_SalesData, String>(
-                dataSource: data,
-                xValueMapper: (_SalesData sales, _) => sales.year,
-                yValueMapper: (_SalesData sales, _) => sales.sales,
-                name: 'Sales',
-                color: Colors.lightGreenAccent,
-                onPointDoubleTap: (_) {
-                  _zoomPanBehavior.reset();
-                },
-                // Enable data label
-                dataLabelSettings: const DataLabelSettings(
-                  isVisible: true,
-                ))
-          ]),
-    ]);
+    return BlocBuilder<NepseIndexBloc,NepseIndexState>(builder: (context,state){
+      if (state is NepseIndexError) {
+        return const Center(
+          child: Text('Failed To Fetch Nepse Index Data'),
+        );
+      }
+      if(state is NepseIndexEmpty){
+        return const Center(
+          child: Text("No Data Found"),
+        );
+      }
+      if(state is NepseIndexLoading){
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      if(state is NepseIndexLoaded){
+        final data = state.nepseIndex.nepseIndexList;
+        return SfCartesianChart(
+          zoomPanBehavior: ZoomPanBehavior(enablePanning: true),
+            palette: const <Color>[
+              Colors.teal,
+              Colors.orange,
+              Colors.brown
+            ],
+            primaryXAxis: DateTimeAxis(
+              title: AxisTitle(
+                text: 'Time'
+              ),
+                intervalType: DateTimeIntervalType.hours,
+                visibleMinimum: data[data.length-4].time,
+                visibleMaximum: data[data.length-1].time),
+            primaryYAxis: NumericAxis(isInversed: false,interval: 10),
+            // Chart title
+            title: ChartTitle(text: 'Nepse Index'),
+            // Enable tooltip
+            tooltipBehavior: TooltipBehavior(enable: true),
+            series: <CartesianSeries<NepseIndexModel, DateTime>>[
+              AreaSeries(
+                  dataSource: data,
+                  xValueMapper: (data, _) => data.time,
+                  yValueMapper: (data, _) => data.index,
+                  isVisibleInLegend: true,
+                  xAxisName: 'Time',
+                  yAxisName: 'Index',
+                  name: 'Nepse Index',
+                  color: Colors.lightGreenAccent,
+                  markerSettings: const MarkerSettings(
+                    isVisible: true,
+                    color: Colors.white,
+
+                  )
+                  )
+            ]);
+      }
+      else{
+        return Container();
+      }
+    });
+
   }
 }
 
-class _SalesData {
-  _SalesData(this.year, this.sales);
 
-  final String year;
-  final double sales;
-}
