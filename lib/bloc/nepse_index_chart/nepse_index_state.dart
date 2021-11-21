@@ -21,4 +21,5 @@ class NepseIndexLoaded extends NepseIndexState {
   List<Object> get props => [nepseIndex];
 }
 //Error State
-class NepseIndexError extends NepseIndexState {}
+class NepseIndexError extends NepseIndexState {
+}

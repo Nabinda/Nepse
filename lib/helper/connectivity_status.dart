@@ -15,8 +15,6 @@ class _ConnectivityStatusState extends State<ConnectivityStatus> {
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivityResult;
 
-
-
   @override
   Widget build(BuildContext context) {
     return Container();

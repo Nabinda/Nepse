@@ -1,4 +1,3 @@
-
 import 'package:nepse/model/nepse_index_model.dart';
 
 class NepseIndexList {
@@ -8,10 +7,11 @@ class NepseIndexList {
     required this.nepseIndexList,
   });
 
-  factory NepseIndexList.fromJson(List<NepseIndexModel> json) {
+  factory NepseIndexList.fromJSON(dynamic json) {
     List<NepseIndexModel> nepseIndexList = <NepseIndexModel>[];
-    nepseIndexList = json.map((post) => NepseIndexModel.fromJson(post)).toList();
-
+    for (var post in json) {
+      nepseIndexList.add(NepseIndexModel.fromJson(post));
+    }
     return NepseIndexList(
       nepseIndexList: nepseIndexList,
     );

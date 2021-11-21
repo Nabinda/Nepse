@@ -4,21 +4,25 @@ import 'package:nepse/bloc/nepse_index_chart/nepse_index_state.dart';
 import 'package:nepse/model/nepse_index_list.dart';
 import 'package:nepse/repositories/nepse_index_repositories.dart';
 
-class NepseIndexBloc extends Bloc<NepseIndexEvent, NepseIndexState>{
+class NepseIndexBloc extends Bloc<NepseIndexEvent, NepseIndexState> {
   final NepseIndexRepositories nepseIndexRepositories;
-  NepseIndexBloc({required this.nepseIndexRepositories}) : super(NepseIndexEmpty());
-
-  Stream<NepseIndexState> mapEventToState(NepseIndexEvent event) async*{
-    if(event is FetchNepseIndex){
-      yield NepseIndexLoading();
-      try{
-        final NepseIndexList nepseIndexModel = await nepseIndexRepositories.fetchNepseIndexChart();
-        yield NepseIndexLoaded(nepseIndex: nepseIndexModel);
-      }
-      catch(_){
-        yield NepseIndexError();
-      }
-    }
+  NepseIndexBloc({required this.nepseIndexRepositories})
+      : super(NepseIndexEmpty()) {
+    on<FetchNepseIndex>(onFetchNepseIndex);
   }
 
+  Future<void> onFetchNepseIndex(
+    FetchNepseIndex event,
+    Emitter<NepseIndexState> emit,
+  ) async {
+    try {
+      emit(NepseIndexLoading());
+
+      final NepseIndexList nepseIndexModel =
+          await nepseIndexRepositories.fetchNepseIndexChart();
+      emit(NepseIndexLoaded(nepseIndex: nepseIndexModel));
+    } catch (e) {
+      emit(NepseIndexError());
+    }
+  }
 }

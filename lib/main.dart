@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +11,7 @@ import 'package:nepse/widgets/graph.dart';
 
 void main() {
   final NepseIndexRepositories repository = NepseIndexRepositories(
-    nepseIndexApiClient:  ApiClient(
+    nepseIndexApiClient: ApiClient(
       httpClient: http.Client(),
     ),
   );
@@ -23,16 +22,16 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final NepseIndexRepositories nepseIndexRepositories;
-  const MyApp({Key? key, required this.nepseIndexRepositories}) : super(key: key);
+  const MyApp({Key? key, required this.nepseIndexRepositories})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider<NepseIndexBloc>(
-            create: (_) => NepseIndexBloc(
-      nepseIndexRepositories: nepseIndexRepositories
-    ))
+            create: (_) =>
+                NepseIndexBloc(nepseIndexRepositories: nepseIndexRepositories))
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
