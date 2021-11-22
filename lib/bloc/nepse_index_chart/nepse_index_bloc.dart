@@ -17,7 +17,6 @@ class NepseIndexBloc extends Bloc<NepseIndexEvent, NepseIndexState> {
   ) async {
     try {
       emit(NepseIndexLoading());
-
       final NepseIndexList nepseIndexModel =
           await nepseIndexRepositories.fetchNepseIndexChart();
       emit(NepseIndexLoaded(nepseIndex: nepseIndexModel));

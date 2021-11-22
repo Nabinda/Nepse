@@ -43,29 +43,24 @@ class _CustomGraphState extends State<CustomGraph> {
             zoomPanBehavior: ZoomPanBehavior(enablePanning: true),
             palette: const <Color>[Colors.teal, Colors.orange, Colors.brown],
             primaryXAxis: DateTimeAxis(
-                title: AxisTitle(text: 'Time'),
-                intervalType: DateTimeIntervalType.hours,
-                visibleMinimum: data[data.length - 4].time,
+                majorGridLines: const MajorGridLines(width: 0),
+                visibleMinimum: data[data.length ~/ 2].time,
                 visibleMaximum: data[data.length - 1].time),
-            primaryYAxis: NumericAxis(isInversed: false, interval: 10),
-            // Chart title
+            primaryYAxis: NumericAxis(
+                isInversed: false,
+                interval: 10,
+                majorGridLines: const MajorGridLines(width: 0)),
             title: ChartTitle(text: 'Nepse Index'),
             // Enable tooltip
             tooltipBehavior: TooltipBehavior(enable: true),
             series: <CartesianSeries<NepseIndexModel, DateTime>>[
               AreaSeries(
-                  dataSource: data,
-                  xValueMapper: (data, _) => data.time,
-                  yValueMapper: (data, _) => data.index,
-                  isVisibleInLegend: true,
-                  xAxisName: 'Time',
-                  yAxisName: 'Index',
-                  name: 'Nepse Index',
-                  color: Colors.lightGreenAccent,
-                  markerSettings: const MarkerSettings(
-                    isVisible: true,
-                    color: Colors.white,
-                  ))
+                dataSource: data,
+                xValueMapper: (list, _) => list.time,
+                yValueMapper: (list, _) => list.index,
+                name: 'Nepse Index',
+                color: Colors.lightGreenAccent,
+              )
             ]);
       } else {
         return Container();

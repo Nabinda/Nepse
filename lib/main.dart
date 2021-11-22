@@ -1,13 +1,12 @@
-import 'dart:async';
-import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nepse/bloc/connectivity/bloc.dart';
 import 'package:nepse/bloc/nepse_index_chart/bloc.dart';
 import 'package:nepse/repositories/api_client.dart';
 import 'package:nepse/repositories/nepse_index_repositories.dart';
-import 'package:nepse/widgets/graph.dart';
+import 'package:nepse/view/landing_screen.dart';
 
 void main() {
   final NepseIndexRepositories repository = NepseIndexRepositories(
@@ -54,54 +53,35 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  ConnectivityResult _connectionStatus = ConnectivityResult.none;
-  final Connectivity _connectivity = Connectivity();
-  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
   @override
   void initState() {
     super.initState();
-    initConnectivity();
-    _connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
   }
-
-  @override
-  void dispose() {
-    _connectivitySubscription.cancel();
-    super.dispose();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initConnectivity() async {
-    late ConnectivityResult result;
-    try {
-      result = await _connectivity.checkConnectivity();
-    } on PlatformException catch (e) {
-      //print(e.toString());
-      return;
-    }
-    if (!mounted) {
-      return Future.value(null);
-    }
-    return _updateConnectionStatus(result);
-  }
-
-  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
-    setState(() {
-      _connectionStatus = result;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Connectivity example app'),
-      ),
-      body: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.55,
-          child: const CustomGraph()),
+    return BlocBuilder<ConnectivityBloc, ConnectivityState>(
+      bloc: ConnectivityBloc(),
+      builder: (context,state){
+        if(state is ConnectivityHasInternetState){
+          return const Scaffold(
+              body: LandingScreen()
+          );
+        }
+        else if(state is ConnectivityNoNetworkState){
+          return const Scaffold(
+            body: Text("No Internet Connection"),
+          );
+        }
+        else if(state is ConnectivityErrorState){
+          return const Scaffold(
+            body:  Text("You are Fucked Up"),
+          );
+        }
+        else{
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }
