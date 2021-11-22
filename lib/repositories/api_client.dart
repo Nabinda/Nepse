@@ -11,7 +11,6 @@ class ApiClient {
   Future<NepseIndexList> fetchNepseIndex() async {
     final url = '$_baseUrl/nepse-index-chart';
     final response = await httpClient.get(Uri.parse(url));
-    print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error getting Index');
     }

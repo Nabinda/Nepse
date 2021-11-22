@@ -30,14 +30,17 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<NepseIndexBloc>(
             create: (_) =>
-                NepseIndexBloc(nepseIndexRepositories: nepseIndexRepositories))
+                NepseIndexBloc(nepseIndexRepositories: nepseIndexRepositories)),
+        BlocProvider<ConnectivityBloc>(
+            create: (_) =>
+                ConnectivityBloc(connectivity: Connectivity()))
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Nepse',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        home: const MyHomePage(title: 'Nepse'),
       ),
     );
   }
@@ -53,15 +56,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   void initState() {
+    BlocProvider.of<ConnectivityBloc>(context).add(const StartConnectivityEvent());
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ConnectivityBloc, ConnectivityState>(
-      bloc: ConnectivityBloc(),
       builder: (context,state){
         if(state is ConnectivityHasInternetState){
           return const Scaffold(
@@ -78,10 +80,14 @@ class _MyHomePageState extends State<MyHomePage> {
             body:  Text("You are Fucked Up"),
           );
         }
+        else if(state is ConnectivityInitialState){
+          return  const Center(child:  CircularProgressIndicator());
+        }
         else{
-          return const Center(child: CircularProgressIndicator());
+          return Container();
         }
       },
+
     );
   }
 }

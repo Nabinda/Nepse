@@ -1,30 +1,30 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:nepse/bloc/connectivity/connectivity_events.dart';
 import 'package:nepse/bloc/connectivity/connectivity_state.dart';
-
 class ConnectivityBloc extends Bloc<ConnectivityEvents, ConnectivityState> {
-  ConnectivityBloc()
+  final Connectivity connectivity;
+  ConnectivityBloc({required this.connectivity})
       : super(const ConnectivityInitialState()) {
-    on<ConnectivityChangeEvent>(getConnectivityStatus);
+    on<StartConnectivityEvent>(startConnectivityStatus);
   }
 
-  getConnectivityStatus(ConnectivityChangeEvent event,
-      Emitter<ConnectivityState> emitter) {
+  startConnectivityStatus(
+      StartConnectivityEvent event, Emitter<ConnectivityState> emitter) async {
     try {
-      Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-        if (result == ConnectivityResult.none) {
-          emitter(const ConnectivityNoNetworkState());
-        }
-        else {
-          emitter(const ConnectivityHasInternetState());
-        }
-      });
-    } catch (e){
+      emitter(const ConnectivityInitialState());
+      await emitter.onEach<ConnectivityResult>(
+        connectivity.onConnectivityChanged,
+        onData: (data) {
+          if (data == ConnectivityResult.none) {
+            emitter(const ConnectivityNoNetworkState());
+          } else {
+            emitter(const ConnectivityHasInternetState());
+          }
+        },
+      );
+    } catch (e) {
       emitter(const ConnectivityErrorState());
     }
   }
 }
-

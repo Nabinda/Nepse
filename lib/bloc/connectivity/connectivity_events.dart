@@ -13,3 +13,6 @@ class ConnectivityChangeEvent extends ConnectivityEvents{
   @override
   List<Object> get props => [connectivityResult];
 }
+class StartConnectivityEvent extends ConnectivityEvents{
+  const StartConnectivityEvent();
+}
