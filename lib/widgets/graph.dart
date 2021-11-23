@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nepse/bloc/nepse_index_chart/bloc.dart';
-import 'package:nepse/model/nepse_index_model.dart';
+import 'package:nepse/model/nepse_index/nepse_index_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -50,7 +50,6 @@ class _CustomGraphState extends State<CustomGraph> {
                 isInversed: false,
                 interval: 10,
                 majorGridLines: const MajorGridLines(width: 0)),
-            title: ChartTitle(text: 'Nepse Index'),
             // Enable tooltip
             tooltipBehavior: TooltipBehavior(enable: true),
             series: <CartesianSeries<NepseIndexModel, DateTime>>[

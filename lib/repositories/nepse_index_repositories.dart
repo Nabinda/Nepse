@@ -1,4 +1,4 @@
-import 'package:nepse/model/nepse_index_list.dart';
+import 'package:nepse/model/nepse_index/nepse_index_list.dart';
 import 'package:nepse/repositories/api_client.dart';
 
 class NepseIndexRepositories{

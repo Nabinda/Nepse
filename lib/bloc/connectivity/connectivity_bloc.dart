@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:nepse/bloc/connectivity/connectivity_events.dart';
@@ -18,7 +20,8 @@ class ConnectivityBloc extends Bloc<ConnectivityEvents, ConnectivityState> {
         onData: (data) {
           if (data == ConnectivityResult.none) {
             emitter(const ConnectivityNoNetworkState());
-          } else {
+          }
+          else {
             emitter(const ConnectivityHasInternetState());
           }
         },
@@ -27,4 +30,17 @@ class ConnectivityBloc extends Bloc<ConnectivityEvents, ConnectivityState> {
       emitter(const ConnectivityErrorState());
     }
   }
+  //
+  // Future<bool> checkInternetStatus() async{
+  //   try{
+  //     final result = await InternetAddress.lookup('www.google.com');
+  //     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+  //       return true;
+  //     }else{
+  //       return false;
+  //     }
+  //   }on SocketException catch(_){
+  //       return false;
+  //   }
+  // }
 }

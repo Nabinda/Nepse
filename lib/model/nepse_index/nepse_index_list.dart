@@ -1,4 +1,4 @@
-import 'package:nepse/model/nepse_index_model.dart';
+import 'package:nepse/model/nepse_index/nepse_index_model.dart';
 
 class NepseIndexList {
   final List<NepseIndexModel> nepseIndexList;

@@ -3,25 +3,32 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepse/bloc/connectivity/bloc.dart';
+import 'package:nepse/bloc/market_summary/bloc.dart';
 import 'package:nepse/bloc/nepse_index_chart/bloc.dart';
 import 'package:nepse/repositories/api_client.dart';
+import 'package:nepse/repositories/market_summary_repositories.dart';
 import 'package:nepse/repositories/nepse_index_repositories.dart';
 import 'package:nepse/view/landing_screen.dart';
 
 void main() {
-  final NepseIndexRepositories repository = NepseIndexRepositories(
+  final NepseIndexRepositories nepseIndexRepositories = NepseIndexRepositories(
     nepseIndexApiClient: ApiClient(
       httpClient: http.Client(),
     ),
   );
+  final MarketSummaryRepositories marketSummaryRepositories = MarketSummaryRepositories(apiClient: ApiClient(
+    httpClient: http.Client(),
+  ),);
   runApp(MyApp(
-    nepseIndexRepositories: repository,
+    nepseIndexRepositories: nepseIndexRepositories,
+    marketSummaryRepositories: marketSummaryRepositories,
   ));
 }
 
 class MyApp extends StatelessWidget {
   final NepseIndexRepositories nepseIndexRepositories;
-  const MyApp({Key? key, required this.nepseIndexRepositories})
+  final MarketSummaryRepositories marketSummaryRepositories;
+  const MyApp({Key? key, required this.nepseIndexRepositories, required this.marketSummaryRepositories})
       : super(key: key);
 
   @override
@@ -33,7 +40,10 @@ class MyApp extends StatelessWidget {
                 NepseIndexBloc(nepseIndexRepositories: nepseIndexRepositories)),
         BlocProvider<ConnectivityBloc>(
             create: (_) =>
-                ConnectivityBloc(connectivity: Connectivity()))
+                ConnectivityBloc(connectivity: Connectivity())),
+        BlocProvider<MarketSummaryBloc>(
+            create: (_) =>
+                MarketSummaryBloc(marketSummaryRepositories: marketSummaryRepositories))
       ],
       child: MaterialApp(
         title: 'Nepse',

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:nepse/bloc/nepse_index_chart/nepse_index_events.dart';
 import 'package:nepse/bloc/nepse_index_chart/nepse_index_state.dart';
-import 'package:nepse/model/nepse_index_list.dart';
+import 'package:nepse/model/nepse_index/nepse_index_list.dart';
 import 'package:nepse/repositories/nepse_index_repositories.dart';
 
 class NepseIndexBloc extends Bloc<NepseIndexEvent, NepseIndexState> {
