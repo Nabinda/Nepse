@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nepse/bloc/market_status/market_status_bloc.dart';
+import 'package:nepse/bloc/market_status/market_status_event.dart';
+import 'package:nepse/bloc/market_status/market_status_state.dart';
 import 'package:nepse/bloc/market_summary/bloc.dart';
-import 'package:nepse/model/market_summary/nepse_market_summary.dart';
+import 'package:intl/intl.dart';
 
 class MarketSummary extends StatefulWidget {
   const MarketSummary({Key? key}) : super(key: key);
@@ -19,11 +22,11 @@ class _MarketSummaryState extends State<MarketSummary> {
   final int increased = 10;
   final int decreased = 171;
   final int unchanged = 5;
-  final String marketStatus = "Market Opened";
   @override
   void initState() {
     super.initState();
     BlocProvider.of<MarketSummaryBloc>(context).add(const FetchMarketSummary());
+    BlocProvider.of<MarketStatusBloc>(context).add(const FetchMarketStatus());
   }
 
 
@@ -55,64 +58,7 @@ class _MarketSummaryState extends State<MarketSummary> {
                 borderRadius: const BorderRadius.all(Radius.circular(10.0))),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Nepse Index",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              index.toString(),
-                              style: const TextStyle(fontSize: 18),
-                            ),
-                            const SizedBox(
-                              width: 8.0,
-                            ),
-                            Text(
-                              changeInNumber.toString(),
-                              style: TextStyle(
-                                  color: changeInNumber.isNegative
-                                      ? Colors.red
-                                      : Colors.green,
-                                  fontSize: 12),
-                            ),
-                            const SizedBox(
-                              width: 8.0,
-                            ),
-                            Text(changeInPercentage.toString() + "%",
-                                style: TextStyle(
-                                    color: changeInPercentage.isNegative
-                                        ? Colors.red
-                                        : Colors.green,
-                                    fontSize: 12))
-                          ],
-                        )
-                      ],
-                    ),
-                    GestureDetector(
-                      child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 8.0),
-                          decoration: BoxDecoration(
-                              color: marketStatus == "Market Closed"
-                                  ? Colors.red
-                                  : Colors.green,
-                              borderRadius:
-                              const BorderRadius.all(Radius.circular(15.0))),
-                          child: Text(
-                            marketStatus,
-                            style: const TextStyle(color: Colors.white),
-                          )),
-                    )
-                  ],
-                ),
+                marketStatusWidget(context),
                 const Divider(
                   thickness: 1.0,
                   color: Colors.grey,
@@ -166,5 +112,84 @@ class _MarketSummaryState extends State<MarketSummary> {
         }
       }
     );
+  }
+  Widget marketStatusWidget(BuildContext context){
+    return BlocBuilder<MarketStatusBloc, MarketStatusState>(builder: (context,state){
+      if(state is MarketStatusLoaded){
+        final data = state.marketStatus;
+        return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Nepse Index",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  const SizedBox(
+                    height: 5.0,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        index.toString(),
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                      const SizedBox(
+                        width: 8.0,
+                      ),
+                      Text(
+                        changeInNumber.toString(),
+                        style: TextStyle(
+                            color: changeInNumber.isNegative
+                                ? Colors.red
+                                : Colors.green,
+                            fontSize: 12),
+                      ),
+                      const SizedBox(
+                        width: 8.0,
+                      ),
+                      Text(changeInPercentage.toString() + "%",
+                          style: TextStyle(
+                              color: changeInPercentage.isNegative
+                                  ? Colors.red
+                                  : Colors.green,
+                              fontSize: 12)),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 5.0,
+                  ),
+                  Text(DateFormat.yMMMMd('en_US').add_jm().format(data.dateTime),
+                      style: const TextStyle(fontSize: 12))
+                ],
+              ),
+              GestureDetector(
+                child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 8.0),
+                    decoration: BoxDecoration(
+                        color: data.isOpen == "CLOSE"
+                            ? Colors.red
+                            : Colors.green,
+                        borderRadius:
+                        const BorderRadius.all(Radius.circular(15.0))),
+                    child: Text(
+                      data.isOpen == "CLOSE"?"Market Closed":"Market Open",
+                      style: const TextStyle(color: Colors.white),
+                    )),
+              )
+            ],
+          );
+      }
+      else if(state is MarketStatusLoading){
+        return const CircularProgressIndicator();
+      }
+      else{
+        return const Text("Error");
+      }
+    });
   }
 }

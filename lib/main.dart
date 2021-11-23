@@ -6,9 +6,12 @@ import 'package:nepse/bloc/connectivity/bloc.dart';
 import 'package:nepse/bloc/market_summary/bloc.dart';
 import 'package:nepse/bloc/nepse_index_chart/bloc.dart';
 import 'package:nepse/repositories/api_client.dart';
+import 'package:nepse/repositories/market_status_repositories.dart';
 import 'package:nepse/repositories/market_summary_repositories.dart';
 import 'package:nepse/repositories/nepse_index_repositories.dart';
 import 'package:nepse/view/landing_screen.dart';
+
+import 'bloc/market_status/market_status_bloc.dart';
 
 void main() {
   final NepseIndexRepositories nepseIndexRepositories = NepseIndexRepositories(
@@ -19,16 +22,21 @@ void main() {
   final MarketSummaryRepositories marketSummaryRepositories = MarketSummaryRepositories(apiClient: ApiClient(
     httpClient: http.Client(),
   ),);
+  final MarketStatusRepositories marketStatusRepositories = MarketStatusRepositories(apiClient: ApiClient(
+    httpClient: http.Client(),
+  ),);
   runApp(MyApp(
     nepseIndexRepositories: nepseIndexRepositories,
     marketSummaryRepositories: marketSummaryRepositories,
+    marketStatusRepositories: marketStatusRepositories,
   ));
 }
 
 class MyApp extends StatelessWidget {
   final NepseIndexRepositories nepseIndexRepositories;
   final MarketSummaryRepositories marketSummaryRepositories;
-  const MyApp({Key? key, required this.nepseIndexRepositories, required this.marketSummaryRepositories})
+  final MarketStatusRepositories marketStatusRepositories;
+  const MyApp({Key? key, required this.nepseIndexRepositories, required this.marketSummaryRepositories, required this.marketStatusRepositories})
       : super(key: key);
 
   @override
@@ -43,7 +51,10 @@ class MyApp extends StatelessWidget {
                 ConnectivityBloc(connectivity: Connectivity())),
         BlocProvider<MarketSummaryBloc>(
             create: (_) =>
-                MarketSummaryBloc(marketSummaryRepositories: marketSummaryRepositories))
+                MarketSummaryBloc(marketSummaryRepositories: marketSummaryRepositories)),
+        BlocProvider<MarketStatusBloc>(
+            create: (_) =>
+                MarketStatusBloc(marketStatusRepositories: marketStatusRepositories)),
       ],
       child: MaterialApp(
         title: 'Nepse',
