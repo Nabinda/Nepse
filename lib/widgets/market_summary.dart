@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepse/bloc/market_status/market_status_bloc.dart';
 import 'package:nepse/bloc/market_status/market_status_event.dart';
@@ -28,8 +26,6 @@ class _MarketSummaryState extends State<MarketSummary> {
     BlocProvider.of<MarketSummaryBloc>(context).add(const FetchMarketSummary());
     BlocProvider.of<MarketStatusBloc>(context).add(const FetchMarketStatus());
   }
-
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MarketSummaryBloc,MarketSummaryState>(

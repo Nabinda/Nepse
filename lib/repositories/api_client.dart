@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:nepse/model/market_status/market_status_model.dart';
 import 'package:nepse/model/nepse_index/nepse_index_list.dart';
-import 'package:nepse/model/market_summary/nepse_market_summary.dart';
 import 'package:nepse/model/market_summary/nepse_market_summary_list.dart';
 
 class ApiClient {

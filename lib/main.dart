@@ -9,6 +9,7 @@ import 'package:nepse/repositories/api_client.dart';
 import 'package:nepse/repositories/market_status_repositories.dart';
 import 'package:nepse/repositories/market_summary_repositories.dart';
 import 'package:nepse/repositories/nepse_index_repositories.dart';
+import 'package:nepse/utils/routes.dart';
 import 'package:nepse/view/landing_screen.dart';
 
 import 'bloc/market_status/market_status_bloc.dart';
@@ -57,11 +58,13 @@ class MyApp extends StatelessWidget {
                 MarketStatusBloc(marketStatusRepositories: marketStatusRepositories)),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Nepse',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
         home: const MyHomePage(title: 'Nepse'),
+        routes: Routes.routes,
       ),
     );
   }
