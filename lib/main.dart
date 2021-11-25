@@ -1,61 +1,29 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepse/bloc/connectivity/bloc.dart';
 import 'package:nepse/bloc/market_summary/bloc.dart';
 import 'package:nepse/bloc/nepse_index_chart/bloc.dart';
-import 'package:nepse/repositories/api_client.dart';
-import 'package:nepse/repositories/market_status_repositories.dart';
-import 'package:nepse/repositories/market_summary_repositories.dart';
-import 'package:nepse/repositories/nepse_index_repositories.dart';
+import 'package:nepse/bloc/top_traders/bloc.dart';
 import 'package:nepse/utils/routes.dart';
 import 'package:nepse/view/landing_screen.dart';
-
 import 'bloc/market_status/market_status_bloc.dart';
 
 void main() {
-  final NepseIndexRepositories nepseIndexRepositories = NepseIndexRepositories(
-    nepseIndexApiClient: ApiClient(
-      httpClient: http.Client(),
-    ),
-  );
-  final MarketSummaryRepositories marketSummaryRepositories = MarketSummaryRepositories(apiClient: ApiClient(
-    httpClient: http.Client(),
-  ),);
-  final MarketStatusRepositories marketStatusRepositories = MarketStatusRepositories(apiClient: ApiClient(
-    httpClient: http.Client(),
-  ),);
-  runApp(MyApp(
-    nepseIndexRepositories: nepseIndexRepositories,
-    marketSummaryRepositories: marketSummaryRepositories,
-    marketStatusRepositories: marketStatusRepositories,
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final NepseIndexRepositories nepseIndexRepositories;
-  final MarketSummaryRepositories marketSummaryRepositories;
-  final MarketStatusRepositories marketStatusRepositories;
-  const MyApp({Key? key, required this.nepseIndexRepositories, required this.marketSummaryRepositories, required this.marketStatusRepositories})
-      : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<NepseIndexBloc>(
-            create: (_) =>
-                NepseIndexBloc(nepseIndexRepositories: nepseIndexRepositories)),
-        BlocProvider<ConnectivityBloc>(
-            create: (_) =>
-                ConnectivityBloc(connectivity: Connectivity())),
-        BlocProvider<MarketSummaryBloc>(
-            create: (_) =>
-                MarketSummaryBloc(marketSummaryRepositories: marketSummaryRepositories)),
-        BlocProvider<MarketStatusBloc>(
-            create: (_) =>
-                MarketStatusBloc(marketStatusRepositories: marketStatusRepositories)),
+        BlocProvider<NepseIndexBloc>(create: (_) => NepseIndexBloc()),
+        BlocProvider<ConnectivityBloc>(create: (_) => ConnectivityBloc()),
+        BlocProvider<MarketSummaryBloc>(create: (_) => MarketSummaryBloc()),
+        BlocProvider<MarketStatusBloc>(create: (_) => MarketStatusBloc()),
+        BlocProvider<TopTradersBloc>(create: (_) => TopTradersBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -82,36 +50,31 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
-    BlocProvider.of<ConnectivityBloc>(context).add(const StartConnectivityEvent());
+    BlocProvider.of<ConnectivityBloc>(context)
+        .add(const StartConnectivityEvent());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ConnectivityBloc, ConnectivityState>(
-      builder: (context,state){
-        if(state is ConnectivityHasInternetState){
-          return const Scaffold(
-              body: LandingScreen()
-          );
-        }
-        else if(state is ConnectivityNoNetworkState){
+      builder: (context, state) {
+        if (state is ConnectivityHasInternetState) {
+          return const Scaffold(body: LandingScreen());
+        } else if (state is ConnectivityNoNetworkState) {
           return const Scaffold(
             body: Text("No Internet Connection"),
           );
-        }
-        else if(state is ConnectivityErrorState){
+        } else if (state is ConnectivityErrorState) {
           return const Scaffold(
-            body:  Text("You are Fucked Up"),
+            body: Text("You are Fucked Up"),
           );
-        }
-        else if(state is ConnectivityInitialState){
-          return  const Center(child:  CircularProgressIndicator());
-        }
-        else{
+        } else if (state is ConnectivityInitialState) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
           return Container();
         }
       },
-
     );
   }
 }

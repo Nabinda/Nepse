@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:nepse/model/nepse_index/nepse_index_list.dart';
+import 'package:nepse/model/nepse_index/nepse_index_model.dart';
 
 abstract class NepseIndexState extends Equatable {
   const NepseIndexState();
@@ -10,7 +11,8 @@ abstract class NepseIndexState extends Equatable {
 //Empty State
 class NepseIndexEmpty extends NepseIndexState {}
 //Loading State
-class NepseIndexLoading extends NepseIndexState {}
+class NepseIndexLoading extends NepseIndexState {
+}
 //Loaded State
 class NepseIndexLoaded extends NepseIndexState {
   final NepseIndexList nepseIndex;

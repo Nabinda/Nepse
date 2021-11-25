@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepse/bloc/market_status/market_status_bloc.dart';
@@ -5,6 +7,7 @@ import 'package:nepse/bloc/market_status/market_status_event.dart';
 import 'package:nepse/bloc/market_status/market_status_state.dart';
 import 'package:nepse/bloc/market_summary/bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MarketSummary extends StatefulWidget {
   const MarketSummary({Key? key}) : super(key: key);
@@ -25,6 +28,10 @@ class _MarketSummaryState extends State<MarketSummary> {
     super.initState();
     BlocProvider.of<MarketSummaryBloc>(context).add(const FetchMarketSummary());
     BlocProvider.of<MarketStatusBloc>(context).add(const FetchMarketStatus());
+    Timer.periodic(const Duration(seconds: 300), (_) {
+      BlocProvider.of<MarketSummaryBloc>(context).add(const FetchMarketSummary());
+      BlocProvider.of<MarketStatusBloc>(context).add(const FetchMarketStatus());
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -41,8 +48,18 @@ class _MarketSummaryState extends State<MarketSummary> {
           );
         }
         if (state is MarketSummaryLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: Shimmer.fromColors(
+              baseColor: Colors.blueGrey,
+              highlightColor: Colors.white,
+              period: const Duration(seconds: 2),
+              child: Container(
+                height: 180,
+                decoration:  BoxDecoration(
+                    border: Border.all(width: 1.0, color: Colors.grey),
+                    borderRadius: const BorderRadius.all(Radius.circular(10.0))),
+              ),
+            )
           );
         }
         if (state is MarketSummaryLoaded) {
@@ -181,7 +198,18 @@ class _MarketSummaryState extends State<MarketSummary> {
           );
       }
       else if(state is MarketStatusLoading){
-        return const CircularProgressIndicator();
+        return Shimmer.fromColors(
+          baseColor: Colors.red,
+          highlightColor: Colors.grey[300]!,
+          period: const Duration(seconds: 2),
+          child: Container(
+            height: 50,
+            decoration: ShapeDecoration(
+              color: Colors.grey[400]!, shape: const RoundedRectangleBorder(),
+
+            ),
+          ),
+        );
       }
       else{
         return const Text("Error");

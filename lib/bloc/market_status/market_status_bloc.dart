@@ -5,8 +5,8 @@ import 'market_status_event.dart';
 import 'market_status_state.dart';
 
 class MarketStatusBloc extends Bloc<MarketStatusEvent, MarketStatusState> {
-  final MarketStatusRepositories marketStatusRepositories;
-  MarketStatusBloc({required this.marketStatusRepositories})
+  MarketStatusRepositories marketStatusRepositories = MarketStatusRepositories();
+  MarketStatusBloc()
       : super(MarketStatusEmpty()) {
     on<FetchMarketStatus>(onFetchMarketStatus);
   }

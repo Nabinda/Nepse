@@ -5,9 +5,8 @@ import 'package:nepse/model/nepse_index/nepse_index_list.dart';
 import 'package:nepse/repositories/nepse_index_repositories.dart';
 
 class NepseIndexBloc extends Bloc<NepseIndexEvent, NepseIndexState> {
-  final NepseIndexRepositories nepseIndexRepositories;
-  NepseIndexBloc({required this.nepseIndexRepositories})
-      : super(NepseIndexEmpty()) {
+  NepseIndexRepositories nepseIndexRepositories = NepseIndexRepositories();
+  NepseIndexBloc() : super(NepseIndexEmpty()) {
     on<FetchNepseIndex>(onFetchNepseIndex);
   }
 
