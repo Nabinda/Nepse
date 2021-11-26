@@ -29,8 +29,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  #graph
+  #graph and table
   syncfusion_flutter_charts: ^19.3.54
+  syncfusion_flutter_datagrid: ^19.3.55
   #state management
   bloc: ^8.0.1
   flutter_bloc: ^8.0.0

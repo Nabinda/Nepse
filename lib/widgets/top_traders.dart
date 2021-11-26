@@ -19,11 +19,29 @@ class _TopTradersState extends State<TopTraders> {
     _page = <InkWell>[];
   }
 
+  void getData(String text,{int indexingPage = 1}) {
+    if (widget.topTraders == "Gainers") {
+      BlocProvider.of<TopTradersBloc>(context)
+          .add(FetchTopGainers(pageNumber: indexingPage));
+    } else if (widget.topTraders == "Losers") {
+      BlocProvider.of<TopTradersBloc>(context)
+          .add(FetchTopLosers(pageNumber: indexingPage));
+    } else if (widget.topTraders == "TurnOver") {
+      BlocProvider.of<TopTradersBloc>(context)
+          .add(FetchTopTurnOver(pageNumber: indexingPage));
+    } else if (widget.topTraders == "Volume") {
+      BlocProvider.of<TopTradersBloc>(context)
+          .add(FetchTopVolume(pageNumber: indexingPage));
+    } else if (widget.topTraders == "Transactions") {
+      BlocProvider.of<TopTradersBloc>(context)
+          .add(FetchTopTransactions(pageNumber: indexingPage));
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<TopTradersBloc>(context)
-        .add(FetchTopTraders(pageNumber: pageNumber));
+    getData(widget.topTraders);
   }
 
   @override
@@ -45,6 +63,7 @@ class _TopTradersState extends State<TopTraders> {
 
   Widget tradersData(BuildContext context, List<TopTradersModel> data) {
     return Column(children: [
+      //Header
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -58,14 +77,16 @@ class _TopTradersState extends State<TopTraders> {
         thickness: 1.5,
         color: Colors.blueGrey,
       ),
+      //Content
       LayoutBuilder(builder: (BuildContext context, BoxConstraints constraint) {
-        return SizedBox(
-          height: 1120,
-          child: ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: data.length,
-              itemBuilder: (context, index) {
-                return Column(
+        return ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              return LimitedBox(
+                maxHeight: 56,
+                child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -81,10 +102,11 @@ class _TopTradersState extends State<TopTraders> {
                       color: Colors.blueGrey,
                     ),
                   ],
-                );
-              }),
-        );
+                ),
+              );
+            });
       }),
+      //Paging
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -92,27 +114,25 @@ class _TopTradersState extends State<TopTraders> {
               onTap: () {
                 pageNumber--;
                 resetPage();
-                BlocProvider.of<TopTradersBloc>(context)
-                    .add(FetchTopTraders(pageNumber: pageNumber));
+                getData(widget.topTraders,indexingPage: pageNumber);
               },
               child: Container(
-                width: MediaQuery.of(context).size.width * 0.15,
+                width: MediaQuery.of(context).size.width * 0.17,
                 padding: const EdgeInsets.all(8.0),
                 child:
                     const FittedBox(fit: BoxFit.contain, child: Text("<<Prev")),
               )),
           SizedBox(
-              width: MediaQuery.of(context).size.width * 0.6,
+              width: MediaQuery.of(context).size.width * 0.5,
               child: pagingNumber()),
           InkWell(
               onTap: () {
                 pageNumber++;
                 resetPage();
-                BlocProvider.of<TopTradersBloc>(context)
-                    .add(FetchTopTraders(pageNumber: pageNumber));
+                getData(widget.topTraders,indexingPage: pageNumber);
               },
               child: Container(
-                width: MediaQuery.of(context).size.width * 0.15,
+                width: MediaQuery.of(context).size.width * 0.17,
                 padding: const EdgeInsets.all(8.0),
                 child:
                     const FittedBox(fit: BoxFit.contain, child: Text("Next>>")),
@@ -184,8 +204,7 @@ class _TopTradersState extends State<TopTraders> {
             if (pageNumber != pageNo) {
               pageNumber = pageNo;
               resetPage();
-              BlocProvider.of<TopTradersBloc>(context)
-                  .add(FetchTopTraders(pageNumber: pageNo));
+              getData(widget.topTraders,indexingPage: pageNo);
             }
           },
           child: Padding(
@@ -210,8 +229,7 @@ class _TopTradersState extends State<TopTraders> {
             if (pageNumber != pageNo) {
               pageNumber = pageNo;
               resetPage();
-              BlocProvider.of<TopTradersBloc>(context)
-                  .add(FetchTopTraders(pageNumber: pageNo));
+              getData(widget.topTraders,indexingPage: pageNo);
             }
           },
           child: Padding(
@@ -238,8 +256,7 @@ class _TopTradersState extends State<TopTraders> {
             if (pageNumber != pageNo) {
               pageNumber = pageNo;
               resetPage();
-              BlocProvider.of<TopTradersBloc>(context)
-                  .add(FetchTopTraders(pageNumber: pageNo));
+              getData(widget.topTraders,indexingPage: pageNo);
             }
           },
           child: Padding(
@@ -255,7 +272,7 @@ class _TopTradersState extends State<TopTraders> {
     }
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: _page,
     );
   }

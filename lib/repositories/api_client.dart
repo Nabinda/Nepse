@@ -48,64 +48,66 @@ class ApiClient {
     if (response.statusCode != 200) {
       print(response.statusCode);
     }
+    print(response.statusCode);
     final json = jsonDecode(response.body);
+    print(json);
     TopTradersList topTradersList = TopTradersList.fromJSON(json);
     return topTradersList;
   }
-  // Top Gainers
-  Future<TopTradersList> fetchTopGainers() async {
-    final url = '$_baseUrl/top-gainers';
-    final response = await httpClient.get(Uri.parse(url));
-    if (response.statusCode != 200) {
-      print(response.statusCode);
-    }
-    final json = jsonDecode(response.body);
-    TopTradersList topTradersList = TopTradersList.fromJSON(json);
-    return topTradersList;
-  }
-  //Top Losers
-  Future<TopTradersList> fetchTopLosers() async {
-    final url = '$_baseUrl/top-losers';
-    final response = await httpClient.get(Uri.parse(url));
-    if (response.statusCode != 200) {
-      print(response.statusCode);
-    }
-    final json = jsonDecode(response.body);
-    TopTradersList topTradersList = TopTradersList.fromJSON(json);
-    return topTradersList;
-  }
-  //Top TurnOvers
-  Future<TopTradersList> fetchTopTurnOvers() async {
-    final url = '$_baseUrl/top-turnover';
-    final response = await httpClient.get(Uri.parse(url));
-    if (response.statusCode != 200) {
-      print(response.statusCode);
-    }
-    final json = jsonDecode(response.body);
-    TopTradersList topTradersList = TopTradersList.fromJSON(json);
-    return topTradersList;
-  }
-  //Top Volume
-  Future<TopTradersList> fetchTopVolume() async {
-    final url = '$_baseUrl/top-volume';
-    final response = await httpClient.get(Uri.parse(url));
-    if (response.statusCode != 200) {
-      print(response.statusCode);
-    }
-    final json = jsonDecode(response.body);
-    TopTradersList topTradersList = TopTradersList.fromJSON(json);
-    return topTradersList;
-  }
-  //Top Transaction
-  Future<TopTradersList> fetchTopTransaction() async {
-    final url = '$_baseUrl/top-transaction';
-    final response = await httpClient.get(Uri.parse(url));
-    if (response.statusCode != 200) {
-      print(response.statusCode);
-    }
-    final json = jsonDecode(response.body);
-    TopTradersList topTradersList = TopTradersList.fromJSON(json);
-    return topTradersList;
-  }
+  // // Top Gainers
+  // Future<TopTradersList> fetchTopGainers() async {
+  //   final url = '$_baseUrl/top-gainers';
+  //   final response = await httpClient.get(Uri.parse(url));
+  //   if (response.statusCode != 200) {
+  //     print(response.statusCode);
+  //   }
+  //   final json = jsonDecode(response.body);
+  //   TopTradersList topTradersList = TopTradersList.fromJSON(json);
+  //   return topTradersList;
+  // }
+  // //Top Losers
+  // Future<TopTradersList> fetchTopLosers() async {
+  //   final url = '$_baseUrl/top-losers';
+  //   final response = await httpClient.get(Uri.parse(url));
+  //   if (response.statusCode != 200) {
+  //     print(response.statusCode);
+  //   }
+  //   final json = jsonDecode(response.body);
+  //   TopTradersList topTradersList = TopTradersList.fromJSON(json);
+  //   return topTradersList;
+  // }
+  // //Top TurnOvers
+  // Future<TopTradersList> fetchTopTurnOvers() async {
+  //   final url = '$_baseUrl/top-turnover';
+  //   final response = await httpClient.get(Uri.parse(url));
+  //   if (response.statusCode != 200) {
+  //     print(response.statusCode);
+  //   }
+  //   final json = jsonDecode(response.body);
+  //   TopTradersList topTradersList = TopTradersList.fromJSON(json);
+  //   return topTradersList;
+  // }
+  // //Top Volume
+  // Future<TopTradersList> fetchTopVolume() async {
+  //   final url = '$_baseUrl/top-volume';
+  //   final response = await httpClient.get(Uri.parse(url));
+  //   if (response.statusCode != 200) {
+  //     print(response.statusCode);
+  //   }
+  //   final json = jsonDecode(response.body);
+  //   TopTradersList topTradersList = TopTradersList.fromJSON(json);
+  //   return topTradersList;
+  // }
+  // //Top Transaction
+  // Future<TopTradersList> fetchTopTransaction() async {
+  //   final url = '$_baseUrl/top-transaction';
+  //   final response = await httpClient.get(Uri.parse(url));
+  //   if (response.statusCode != 200) {
+  //     print(response.statusCode);
+  //   }
+  //   final json = jsonDecode(response.body);
+  //   TopTradersList topTradersList = TopTradersList.fromJSON(json);
+  //   return topTradersList;
+  // }
 
 }

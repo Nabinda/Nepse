@@ -10,24 +10,24 @@ class TopTradersRepositories{
     return await apiClient.fetchTopTraders(path,pageNumber: pageNumber);
   }
   //Top Losers
-  Future<TopTradersList> fetchTopLosers() async{
+  Future<TopTradersList> fetchTopLosers({int pageNumber = 1}) async{
     String path = "/top-losers";
-    return await apiClient.fetchTopTraders(path);
+    return await apiClient.fetchTopTraders(path,pageNumber: pageNumber);
   }
   //Top TurnOvers
-  Future<TopTradersList> fetchTopTurnOvers() async{
+  Future<TopTradersList> fetchTopTurnOvers({int pageNumber = 1}) async{
     String path = "/top-turnover";
-    return await apiClient.fetchTopTraders(path);
+    return await apiClient.fetchTopTraders(path,pageNumber: pageNumber);
   }
   //Top Volume
-  Future<TopTradersList> fetchTopVolume() async{
+  Future<TopTradersList> fetchTopVolume({int pageNumber = 1}) async{
     String path = "/top-volume";
-    return await apiClient.fetchTopTraders(path);
+    return await apiClient.fetchTopTraders(path,pageNumber: pageNumber);
   }
 
   //Top Transaction
-  Future<TopTradersList> fetchTopTransaction() async{
+  Future<TopTradersList> fetchTopTransaction({int pageNumber = 1}) async{
     String path = "/top-transaction";
-    return await apiClient.fetchTopTraders(path);
+    return await apiClient.fetchTopTraders(path,pageNumber: pageNumber);
   }
 }

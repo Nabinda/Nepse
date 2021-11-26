@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nepse/bloc/nepse_index_chart/bloc.dart';
 import 'package:nepse/model/nepse_index/nepse_index_model.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

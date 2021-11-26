@@ -8,11 +8,15 @@ class TopTradersBloc extends Bloc<TopTradersEvent, TopTradersState> {
   TopTradersRepositories topTradersRepositories =
   TopTradersRepositories();
   TopTradersBloc() : super(TopTradersEmpty()) {
-    on<FetchTopTraders>(onFetchTopTraders);
+    on<FetchTopGainers>(onFetchTopGainers);
+    on<FetchTopLosers>(onFetchTopLosers);
+    on<FetchTopTransactions>(onFetchTopTransactions);
+    on<FetchTopVolume>(onFetchTopVolume);
+    on<FetchTopTurnOver>(onFetchTopTurnOver);
   }
 
-  Future<void> onFetchTopTraders(
-      FetchTopTraders event,
+  Future<void> onFetchTopGainers(
+      FetchTopGainers event,
       Emitter<TopTradersState> emit,
       ) async {
     try {
@@ -24,4 +28,58 @@ class TopTradersBloc extends Bloc<TopTradersEvent, TopTradersState> {
       emit(TopTradersError());
     }
   }
+  Future<void> onFetchTopLosers(
+      FetchTopLosers event,
+      Emitter<TopTradersState> emit,
+      ) async {
+    try {
+      emit(TopTradersLoading());
+      final TopTradersList topTradersList =
+      await topTradersRepositories.fetchTopLosers(pageNumber: event.pageNumber);
+      emit(TopTradersLoaded(topTradersList: topTradersList));
+    } catch (e) {
+      emit(TopTradersError());
+    }
+  }
+  Future<void> onFetchTopTransactions(
+      FetchTopTransactions event,
+      Emitter<TopTradersState> emit,
+      ) async {
+    try {
+      emit(TopTradersLoading());
+      final TopTradersList topTradersList =
+      await topTradersRepositories.fetchTopTransaction(pageNumber: event.pageNumber);
+      emit(TopTradersLoaded(topTradersList: topTradersList));
+    } catch (e) {
+      emit(TopTradersError());
+    }
+  }
+  Future<void> onFetchTopVolume(
+      FetchTopVolume event,
+      Emitter<TopTradersState> emit,
+      ) async {
+    try {
+      emit(TopTradersLoading());
+      final TopTradersList topTradersList =
+      await topTradersRepositories.fetchTopVolume(pageNumber: event.pageNumber);
+      emit(TopTradersLoaded(topTradersList: topTradersList));
+    } catch (e) {
+      emit(TopTradersError());
+    }
+  }
+  Future<void> onFetchTopTurnOver(
+      FetchTopTurnOver event,
+      Emitter<TopTradersState> emit,
+      ) async {
+    try {
+      emit(TopTradersLoading());
+      final TopTradersList topTradersList =
+      await topTradersRepositories.fetchTopTurnOvers(pageNumber: event.pageNumber);
+      emit(TopTradersLoaded(topTradersList: topTradersList));
+    } catch (e) {
+      emit(TopTradersError());
+    }
+  }
+
+
 }

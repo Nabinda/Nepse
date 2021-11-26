@@ -6,6 +6,7 @@ import 'package:nepse/bloc/nepse_index_chart/bloc.dart';
 import 'package:nepse/bloc/top_traders/bloc.dart';
 import 'package:nepse/utils/routes.dart';
 import 'package:nepse/view/landing_screen.dart';
+import 'package:nepse/view/login.dart';
 import 'bloc/market_status/market_status_bloc.dart';
 
 void main() {
@@ -60,7 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return BlocBuilder<ConnectivityBloc, ConnectivityState>(
       builder: (context, state) {
         if (state is ConnectivityHasInternetState) {
-          return const Scaffold(body: LandingScreen());
+          return const LoginScreen();
+      //    return const Scaffold(body: LandingScreen());
         } else if (state is ConnectivityNoNetworkState) {
           return const Scaffold(
             body: Text("No Internet Connection"),

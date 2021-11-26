@@ -8,7 +8,7 @@ class CorporateDisclosuresScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Portfolio"),
+        title: const Text("Corporate Disclosures"),
       ),
       body: Container(),
     );

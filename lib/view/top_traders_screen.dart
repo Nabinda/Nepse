@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nepse/widgets/top_traders.dart';
+import 'package:nepse/widgets/top_turnover.dart';
 
 class TopTradersScreen extends StatelessWidget {
   static const String routeName = "/top_traders_screen";
@@ -40,7 +41,7 @@ class TopTradersScreen extends StatelessWidget {
           children: <Widget>[
             TopTraders(topTraders: "Gainers"),
             TopTraders(topTraders: "Losers"),
-            TopTraders(topTraders: "TurnOver"),
+            TopTurnOver(),
             TopTraders(topTraders: "Volume"),
             TopTraders(topTraders: "Transaction"),]
             ),
