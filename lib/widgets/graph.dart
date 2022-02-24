@@ -51,7 +51,7 @@ class _CustomGraphState extends State<CustomGraph> {
         palette: const <Color>[Colors.teal, Colors.orange, Colors.brown],
         primaryXAxis: DateTimeAxis(
             majorGridLines: const MajorGridLines(width: 0),
-            visibleMinimum: data[data.length ~/ 2].time,
+            visibleMinimum: data[data.length ~/ 4].time,
             visibleMaximum: data[data.length - 1].time),
         primaryYAxis: NumericAxis(
             isInversed: false,
