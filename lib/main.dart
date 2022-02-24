@@ -9,21 +9,27 @@ import 'package:nepse/bloc/nepse_index_chart/bloc.dart';
 import 'package:nepse/bloc/notice/bloc.dart';
 import 'package:nepse/bloc/todays_price/bloc.dart';
 import 'package:nepse/bloc/top_traders/bloc.dart';
+import 'package:nepse/blocs/auth_bloc/auth.dart';
 import 'package:nepse/utils/routes.dart';
 import 'package:nepse/view/landing_screen.dart';
+import 'package:nepse/view/login.dart';
 import 'bloc/market_status/market_status_bloc.dart';
+import 'repositories/repositories.dart';
 
 void main() {
-  runApp(const MyApp());
+  final userRepository = UserRepository();
+  runApp(MyApp(userRepository: userRepository,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final UserRepository userRepository;
+  const MyApp({Key? key, required this.userRepository}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<AuthenticationBloc>(create: (_) => AuthenticationBloc(userRepository: userRepository)),
         BlocProvider<NepseIndexBloc>(create: (_) => NepseIndexBloc()),
         BlocProvider<ConnectivityBloc>(create: (_) => ConnectivityBloc()),
         BlocProvider<MarketSummaryBloc>(create: (_) => MarketSummaryBloc()),
@@ -41,7 +47,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const MyHomePage(title: 'Nepse'),
+        home: MyHomePage(title: 'Nepse', userRepository: userRepository),
         routes: Routes.routes,
       ),
     );
@@ -49,15 +55,19 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
+  final UserRepository userRepository;
   final String title;
 
+  const MyHomePage({Key? key, required this.title, required this.userRepository}) : super(key: key);
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState(userRepository);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final UserRepository userRepository;
+  _MyHomePageState(this.userRepository);
+
   @override
   void initState() {
     BlocProvider.of<ConnectivityBloc>(context)
@@ -70,8 +80,63 @@ class _MyHomePageState extends State<MyHomePage> {
     return BlocBuilder<ConnectivityBloc, ConnectivityState>(
       builder: (context, state) {
         if (state is ConnectivityHasInternetState) {
-          //return const LoginScreen();
-          return const Scaffold(body: LandingScreen());
+          return Scaffold(body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              builder: (context, state) {
+                if (state is AuthenticationAuthenticated) {
+                  return const LandingScreen();
+                }
+                if (state is AuthenticationUnauthenticated) {
+                  return LoginScreen(userRepository: userRepository);
+                }
+
+                if (state is AuthenticationLoading) {
+                  return Scaffold(
+                    body: Container(
+                      color: Colors.white,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const <Widget>[
+                          SizedBox(
+                            height: 25.0,
+                            width: 25.0,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.green),
+                              strokeWidth: 4.0,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                return Scaffold(
+                  body: Container(
+                    color: Colors.white,
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const <Widget>[
+                        SizedBox(
+                          height: 25.0,
+                          width: 25.0,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                            strokeWidth: 4.0,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              }));
+          // LoginScreen(userRepository: userRepository));
         } else if (state is ConnectivityNoNetworkState) {
           return const Scaffold(
             body: Text("No Internet Connection"),

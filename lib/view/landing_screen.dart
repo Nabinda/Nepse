@@ -1,3 +1,5 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nepse/blocs/auth_bloc/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nepse/widgets/graph.dart';
 import 'package:nepse/widgets/information.dart';
@@ -16,6 +18,20 @@ class _LandingScreenState extends State<LandingScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Nepse"),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              // do something
+              BlocProvider.of<AuthenticationBloc>(context).add(
+                LoggedOut(),
+              );
+            },
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
