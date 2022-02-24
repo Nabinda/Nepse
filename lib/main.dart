@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nepse/bloc/broker/bloc.dart';
 import 'package:nepse/bloc/connectivity/bloc.dart';
 import 'package:nepse/bloc/floor_sheet/bloc.dart';
 import 'package:nepse/bloc/market_summary/bloc.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<TopTradersBloc>(create: (_) => TopTradersBloc()),
         BlocProvider<TodaysPriceBloc>(create: (_) => TodaysPriceBloc()),
         BlocProvider<FloorSheetBloc>(create: (_) => FloorSheetBloc()),
+        BlocProvider<BrokerBloc>(create: (_) => BrokerBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

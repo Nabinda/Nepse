@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' show Client;
+import 'package:nepse/model/broker/broker_list.dart';
 import 'package:nepse/model/floor_sheet/floor_sheet_list.dart';
 import 'package:nepse/model/market_status/market_status_model.dart';
 import 'package:nepse/model/nepse_index/nepse_index_list.dart';
@@ -127,13 +128,24 @@ class ApiClient {
   Future<FloorSheetList> fetchFloorSheet({int pageNumber =1}) async {
     final url = '$_baseUrl/floorsheets?_page=$pageNumber&_limit=20';
     final response = await httpClient.get(Uri.parse(url));
+    print(response.headers);
     if (response.statusCode != 200) {
       print(response.statusCode);
     }
     final json = jsonDecode(response.body);
-    print(json);
     FloorSheetList floorSheetList = FloorSheetList.fromJSON(json);
     return floorSheetList;
+  }
+  //Todays Price
+  Future<BrokerList> fetchBroker() async {
+    final url = '$_baseUrl/brokers';
+    final response = await httpClient.get(Uri.parse(url));
+    if (response.statusCode != 200) {
+      print(response.statusCode);
+    }
+    final json = jsonDecode(response.body);
+    BrokerList brokerList = BrokerList.fromJSON(json);
+    return brokerList;
   }
 
 }

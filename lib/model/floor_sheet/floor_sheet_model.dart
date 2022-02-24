@@ -29,7 +29,6 @@ class FloorSheetModel {
       required this.traceBookId,
       required this.tradeTime});
   factory FloorSheetModel.fromJSON(dynamic json) {
-    print(json);
     return FloorSheetModel(
         contractId: json['contractId'].toString(),
         stockSymbol: json['stockSymbol'].toString(),
