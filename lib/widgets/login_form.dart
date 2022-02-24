@@ -83,7 +83,7 @@ class _LoginFormState extends State<LoginForm> {
                         color: Style.Colors.titleColor,
                         fontWeight: FontWeight.bold),
                     controller: _usernameController,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       prefixIcon: const Icon(EvaIcons.emailOutline, color: Colors.black26),
                       enabledBorder: OutlineInputBorder(
