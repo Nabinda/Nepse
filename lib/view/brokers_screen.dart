@@ -14,21 +14,22 @@ class BrokersScreen extends StatefulWidget {
 }
 
 class _BrokersScreenState extends State<BrokersScreen> {
-  void getData({int indexingPage = 1}) {
+  void getData() {
     BlocProvider.of<BrokerBloc>(context).add(const FetchBroker());
   }
-  makeCall(String phoneNumber) async{
+
+  makeCall(String phoneNumber) async {
     print("check");
     final Uri launchUri = Uri(
       scheme: 'tel',
       path: phoneNumber,
     );
     await launch(launchUri.toString());
-
   }
-  openWebSite(String url) async{
+
+  openWebSite(String url) async {
     if (!await launch(
-      "https://"+url,
+      "https://" + url,
       forceSafariVC: false,
       forceWebView: false,
       headers: <String, String>{'my_header_key': 'my_header_value'},

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepse/bloc/broker/bloc.dart';
+import 'package:nepse/bloc/company/company_bloc.dart';
 import 'package:nepse/bloc/connectivity/bloc.dart';
 import 'package:nepse/bloc/floor_sheet/bloc.dart';
 import 'package:nepse/bloc/market_summary/bloc.dart';
 import 'package:nepse/bloc/nepse_index_chart/bloc.dart';
+import 'package:nepse/bloc/notice/bloc.dart';
 import 'package:nepse/bloc/todays_price/bloc.dart';
 import 'package:nepse/bloc/top_traders/bloc.dart';
 import 'package:nepse/utils/routes.dart';
@@ -30,6 +32,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<TodaysPriceBloc>(create: (_) => TodaysPriceBloc()),
         BlocProvider<FloorSheetBloc>(create: (_) => FloorSheetBloc()),
         BlocProvider<BrokerBloc>(create: (_) => BrokerBloc()),
+        BlocProvider<NoticeBloc>(create: (_) => NoticeBloc()),
+        BlocProvider<CompanyBloc>(create: (_) => CompanyBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
