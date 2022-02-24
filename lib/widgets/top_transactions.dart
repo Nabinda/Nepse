@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nepse/bloc/top_traders/bloc.dart';
-import 'package:nepse/model/top_traders/top_traders_model.dart';
+import 'package:nepse/model/top_transaction/top_transaction_model.dart';
 
-class TopTraders extends StatefulWidget {
-  final String topTraders;
-  const TopTraders({Key? key, required this.topTraders}) : super(key: key);
+import '../bloc/top_traders/top_traders_bloc.dart';
+import '../bloc/top_traders/top_traders_event.dart';
+import '../bloc/top_traders/top_traders_state.dart';
+
+class TopTransactions extends StatefulWidget {
+  const TopTransactions({Key? key}) : super(key: key);
 
   @override
-  _TopTradersState createState() => _TopTradersState();
+  _TopTransactionsState createState() => _TopTransactionsState();
 }
 
-class _TopTradersState extends State<TopTraders> {
+class _TopTransactionsState extends State<TopTransactions> {
   int pageNumber = 1;
   int totalItemsCount = 182;
   List<InkWell> _page = <InkWell>[];
@@ -19,29 +21,15 @@ class _TopTradersState extends State<TopTraders> {
     _page = <InkWell>[];
   }
 
-  void getData(String text,{int indexingPage = 1}) {
-    if (widget.topTraders == "Gainers") {
-      BlocProvider.of<TopTradersBloc>(context)
-          .add(FetchTopGainers(pageNumber: indexingPage));
-    } else if (widget.topTraders == "Losers") {
-      BlocProvider.of<TopTradersBloc>(context)
-          .add(FetchTopLosers(pageNumber: indexingPage));
-    } else if (widget.topTraders == "TurnOver") {
-      BlocProvider.of<TopTradersBloc>(context)
-          .add(FetchTopTurnOver(pageNumber: indexingPage));
-    } else if (widget.topTraders == "Volume") {
-      BlocProvider.of<TopTradersBloc>(context)
-          .add(FetchTopVolume(pageNumber: indexingPage));
-    } else if (widget.topTraders == "Transactions") {
-      BlocProvider.of<TopTradersBloc>(context)
-          .add(FetchTopTransactions(pageNumber: indexingPage));
-    }
+  void getData({int indexingPage = 1}) {
+    BlocProvider.of<TopTradersBloc>(context)
+        .add(FetchTopTransactions(pageNumber: indexingPage));
   }
 
   @override
   void initState() {
     super.initState();
-    getData(widget.topTraders);
+    getData();
   }
 
   @override
@@ -49,8 +37,8 @@ class _TopTradersState extends State<TopTraders> {
     return SingleChildScrollView(
       child: BlocBuilder<TopTradersBloc, TopTradersState>(
           builder: (context, state) {
-        if (state is TopTradersLoaded) {
-          List<TopTradersModel> data = state.topTradersList.topTradersList;
+        if (state is TopTransactionLoaded) {
+          List<TopTransactionModel> data = state.topTransactionList.topTransactionList;
           return tradersData(context, data);
         } else if (state is TopTradersError) {
           return const Text("Error");
@@ -61,16 +49,16 @@ class _TopTradersState extends State<TopTraders> {
     );
   }
 
-  Widget tradersData(BuildContext context, List<TopTradersModel> data) {
+  Widget tradersData(BuildContext context, List<TopTransactionModel> data) {
+    resetPage();
     return Column(children: [
       //Header
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           dataHeader("Symbol"),
+          dataHeader("No. of Transactions"),
           dataHeader("LTP"),
-          dataHeader("Pt. Change"),
-          dataHeader("% Change"),
         ],
       ),
       const Divider(
@@ -92,9 +80,8 @@ class _TopTradersState extends State<TopTraders> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         dataText(data[index].symbol),
+                        dataText(data[index].totalTrades.toString()),
                         dataText(data[index].ltp.toString()),
-                        dataText(data[index].pointChange.toString()),
-                        dataText(data[index].percentageChange.toString()),
                       ],
                     ),
                     const Divider(
@@ -114,7 +101,7 @@ class _TopTradersState extends State<TopTraders> {
               onTap: () {
                 pageNumber--;
                 resetPage();
-                getData(widget.topTraders,indexingPage: pageNumber);
+                getData(indexingPage: pageNumber);
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.17,
@@ -129,7 +116,7 @@ class _TopTradersState extends State<TopTraders> {
               onTap: () {
                 pageNumber++;
                 resetPage();
-                getData(widget.topTraders,indexingPage: pageNumber);
+                getData(indexingPage: pageNumber);
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.17,
@@ -147,7 +134,7 @@ class _TopTradersState extends State<TopTraders> {
       margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       height: 30,
-      width: MediaQuery.of(context).size.width * 0.22,
+      width: MediaQuery.of(context).size.width * 0.3,
       child: FittedBox(
           fit: BoxFit.contain,
           child: Text(
@@ -162,7 +149,7 @@ class _TopTradersState extends State<TopTraders> {
       margin: const EdgeInsets.symmetric(horizontal: 5.0),
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       height: 30,
-      width: MediaQuery.of(context).size.width * 0.22,
+      width: MediaQuery.of(context).size.width * 0.3,
       child: FittedBox(
           fit: BoxFit.contain,
           child: Text(
@@ -204,7 +191,7 @@ class _TopTradersState extends State<TopTraders> {
             if (pageNumber != pageNo) {
               pageNumber = pageNo;
               resetPage();
-              getData(widget.topTraders,indexingPage: pageNo);
+              getData(indexingPage: pageNo);
             }
           },
           child: Padding(
@@ -229,7 +216,7 @@ class _TopTradersState extends State<TopTraders> {
             if (pageNumber != pageNo) {
               pageNumber = pageNo;
               resetPage();
-              getData(widget.topTraders,indexingPage: pageNo);
+              getData(indexingPage: pageNo);
             }
           },
           child: Padding(
@@ -256,7 +243,7 @@ class _TopTradersState extends State<TopTraders> {
             if (pageNumber != pageNo) {
               pageNumber = pageNo;
               resetPage();
-              getData(widget.topTraders,indexingPage: pageNo);
+              getData(indexingPage: pageNo);
             }
           },
           child: Padding(

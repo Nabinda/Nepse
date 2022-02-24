@@ -1,4 +1,7 @@
 import 'package:nepse/model/top_traders/top_traders_list.dart';
+import 'package:nepse/model/top_transaction/top_transaction_list.dart';
+import 'package:nepse/model/top_turnover/top_turnover_list.dart';
+import 'package:nepse/model/top_volume/top_volume_list.dart';
 
 import 'api_client.dart';
 
@@ -15,19 +18,16 @@ class TopTradersRepositories{
     return await apiClient.fetchTopTraders(path,pageNumber: pageNumber);
   }
   //Top TurnOvers
-  Future<TopTradersList> fetchTopTurnOvers({int pageNumber = 1}) async{
-    String path = "/top-turnover";
-    return await apiClient.fetchTopTraders(path,pageNumber: pageNumber);
+  Future<TopTurnOverList> fetchTopTurnOvers({int pageNumber = 1}) async{
+    return await apiClient.fetchTopTurnOvers(pageNumber: pageNumber);
   }
   //Top Volume
-  Future<TopTradersList> fetchTopVolume({int pageNumber = 1}) async{
-    String path = "/top-volume";
-    return await apiClient.fetchTopTraders(path,pageNumber: pageNumber);
+  Future<TopVolumeList> fetchTopVolume({int pageNumber = 1}) async{
+    return await apiClient.fetchTopVolume(pageNumber: pageNumber);
   }
 
   //Top Transaction
-  Future<TopTradersList> fetchTopTransaction({int pageNumber = 1}) async{
-    String path = "/top-transaction";
-    return await apiClient.fetchTopTraders(path,pageNumber: pageNumber);
+  Future<TopTransactionList> fetchTopTransaction({int pageNumber = 1}) async{
+    return await apiClient.fetchTopTransaction(pageNumber: pageNumber);
   }
 }

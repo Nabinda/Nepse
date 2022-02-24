@@ -13,7 +13,7 @@ class TopTransactionModel {
   factory TopTransactionModel.fromJSON(var json) => TopTransactionModel(
       securityId: json["securityId"].toInt(),
       symbol: json["symbol"].toString(),
-      totalTrades: json["totalTrades"].toDouble(),
+      totalTrades: json["totalTrades"].toInt(),
       ltp: json["lastTradedPrice"].toDouble(),
       securityName: json["securityName"].toString());
 }

@@ -11,6 +11,13 @@ class WatchListScreen extends StatelessWidget {
         title:const Text("WatchList"),
       ),
       body: Container(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+
+        },
+        tooltip: 'Add Watchlist',
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

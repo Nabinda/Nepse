@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nepse/model/top_turnover/top_turnover_model.dart';
+import 'package:nepse/model/top_volume/top_volume_model.dart';
+
 import '../bloc/top_traders/top_traders_bloc.dart';
 import '../bloc/top_traders/top_traders_event.dart';
 import '../bloc/top_traders/top_traders_state.dart';
 
-class TopTurnOver extends StatefulWidget {
-  const TopTurnOver({Key? key}) : super(key: key);
+class TopVolume extends StatefulWidget {
+  const TopVolume({Key? key}) : super(key: key);
 
   @override
-  _TopTurnOverState createState() => _TopTurnOverState();
+  _TopVolumeState createState() => _TopVolumeState();
 }
 
-class _TopTurnOverState extends State<TopTurnOver> {
+class _TopVolumeState extends State<TopVolume> {
   int pageNumber = 1;
   int totalItemsCount = 182;
   List<InkWell> _page = <InkWell>[];
@@ -22,7 +23,7 @@ class _TopTurnOverState extends State<TopTurnOver> {
 
   void getData({int indexingPage = 1}) {
     BlocProvider.of<TopTradersBloc>(context)
-        .add(FetchTopTurnOver(pageNumber: indexingPage));
+        .add(FetchTopVolume(pageNumber: indexingPage));
   }
 
   @override
@@ -36,8 +37,8 @@ class _TopTurnOverState extends State<TopTurnOver> {
     return SingleChildScrollView(
       child: BlocBuilder<TopTradersBloc, TopTradersState>(
           builder: (context, state) {
-        if (state is TopTurnOverLoaded) {
-          List<TopTurnOverModel> data = state.topTurnOverList.topTurnOverList;
+        if (state is TopVolumeLoaded) {
+          List<TopVolumeModel> data = state.topVolumeList.topVolumeList;
           return tradersData(context, data);
         } else if (state is TopTradersError) {
           return const Text("Error");
@@ -48,7 +49,7 @@ class _TopTurnOverState extends State<TopTurnOver> {
     );
   }
 
-  Widget tradersData(BuildContext context, List<TopTurnOverModel> data) {
+  Widget tradersData(BuildContext context, List<TopVolumeModel> data) {
     resetPage();
     return Column(children: [
       //Header
@@ -56,7 +57,7 @@ class _TopTurnOverState extends State<TopTurnOver> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           dataHeader("Symbol"),
-          dataHeader("TurnOver"),
+          dataHeader("Shares Traded"),
           dataHeader("LTP"),
         ],
       ),
@@ -79,7 +80,7 @@ class _TopTurnOverState extends State<TopTurnOver> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         dataText(data[index].symbol),
-                        dataText(data[index].turnover.toString()),
+                        dataText(data[index].shareTraded.toString()),
                         dataText(data[index].ltp.toString()),
                       ],
                     ),

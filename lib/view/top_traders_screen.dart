@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nepse/widgets/top_traders.dart';
+import 'package:nepse/widgets/top_gainers.dart';
+import 'package:nepse/widgets/top_losers.dart';
+import 'package:nepse/widgets/top_transactions.dart';
 import 'package:nepse/widgets/top_turnover.dart';
+import 'package:nepse/widgets/top_volume.dart';
 
 class TopTradersScreen extends StatelessWidget {
   static const String routeName = "/top_traders_screen";
@@ -37,15 +40,14 @@ class TopTradersScreen extends StatelessWidget {
             ),
           ),
         ),
-        body: const TabBarView(
-          children: <Widget>[
-            TopTraders(topTraders: "Gainers"),
-            TopTraders(topTraders: "Losers"),
-            TopTurnOver(),
-            TopTraders(topTraders: "Volume"),
-            TopTraders(topTraders: "Transaction"),]
-            ),
-        ),
-      );
+        body: const TabBarView(children: <Widget>[
+          TopGainers(),
+          TopLosers(),
+          TopTurnOver(),
+          TopVolume(),
+          TopTransactions()
+        ]),
+      ),
+    );
   }
 }

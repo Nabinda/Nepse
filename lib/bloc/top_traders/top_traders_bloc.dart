@@ -2,6 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:nepse/bloc/top_traders/top_traders_event.dart';
 import 'package:nepse/bloc/top_traders/top_traders_state.dart';
 import 'package:nepse/model/top_traders/top_traders_list.dart';
+import 'package:nepse/model/top_transaction/top_transaction_list.dart';
+import 'package:nepse/model/top_turnover/top_turnover_list.dart';
+import 'package:nepse/model/top_volume/top_volume_list.dart';
 import 'package:nepse/repositories/top_traders_repositories.dart';
 
 class TopTradersBloc extends Bloc<TopTradersEvent, TopTradersState> {
@@ -47,9 +50,9 @@ class TopTradersBloc extends Bloc<TopTradersEvent, TopTradersState> {
       ) async {
     try {
       emit(TopTradersLoading());
-      final TopTradersList topTradersList =
+      final TopTransactionList topTransactionList =
       await topTradersRepositories.fetchTopTransaction(pageNumber: event.pageNumber);
-      emit(TopTradersLoaded(topTradersList: topTradersList));
+      emit(TopTransactionLoaded(topTransactionList: topTransactionList));
     } catch (e) {
       emit(TopTradersError());
     }
@@ -60,9 +63,9 @@ class TopTradersBloc extends Bloc<TopTradersEvent, TopTradersState> {
       ) async {
     try {
       emit(TopTradersLoading());
-      final TopTradersList topTradersList =
+      final TopVolumeList topVolumeList =
       await topTradersRepositories.fetchTopVolume(pageNumber: event.pageNumber);
-      emit(TopTradersLoaded(topTradersList: topTradersList));
+      emit(TopVolumeLoaded(topVolumeList: topVolumeList));
     } catch (e) {
       emit(TopTradersError());
     }
@@ -73,9 +76,9 @@ class TopTradersBloc extends Bloc<TopTradersEvent, TopTradersState> {
       ) async {
     try {
       emit(TopTradersLoading());
-      final TopTradersList topTradersList =
+      final TopTurnOverList topTurnOverList =
       await topTradersRepositories.fetchTopTurnOvers(pageNumber: event.pageNumber);
-      emit(TopTradersLoaded(topTradersList: topTradersList));
+      emit(TopTurnOverLoaded(topTurnOverList: topTurnOverList));
     } catch (e) {
       emit(TopTradersError());
     }

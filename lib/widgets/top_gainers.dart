@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nepse/model/top_turnover/top_turnover_model.dart';
-import '../bloc/top_traders/top_traders_bloc.dart';
-import '../bloc/top_traders/top_traders_event.dart';
-import '../bloc/top_traders/top_traders_state.dart';
+import 'package:nepse/bloc/top_traders/bloc.dart';
+import 'package:nepse/model/top_traders/top_traders_model.dart';
 
-class TopTurnOver extends StatefulWidget {
-  const TopTurnOver({Key? key}) : super(key: key);
+class TopGainers extends StatefulWidget {
+  const TopGainers({Key? key}) : super(key: key);
 
   @override
-  _TopTurnOverState createState() => _TopTurnOverState();
+  _TopGainersState createState() => _TopGainersState();
 }
 
-class _TopTurnOverState extends State<TopTurnOver> {
+class _TopGainersState extends State<TopGainers> {
   int pageNumber = 1;
   int totalItemsCount = 182;
   List<InkWell> _page = <InkWell>[];
@@ -22,7 +20,7 @@ class _TopTurnOverState extends State<TopTurnOver> {
 
   void getData({int indexingPage = 1}) {
     BlocProvider.of<TopTradersBloc>(context)
-        .add(FetchTopTurnOver(pageNumber: indexingPage));
+        .add(FetchTopGainers(pageNumber: indexingPage));
   }
 
   @override
@@ -36,8 +34,8 @@ class _TopTurnOverState extends State<TopTurnOver> {
     return SingleChildScrollView(
       child: BlocBuilder<TopTradersBloc, TopTradersState>(
           builder: (context, state) {
-        if (state is TopTurnOverLoaded) {
-          List<TopTurnOverModel> data = state.topTurnOverList.topTurnOverList;
+        if (state is TopTradersLoaded) {
+          List<TopTradersModel> data = state.topTradersList.topTradersList;
           return tradersData(context, data);
         } else if (state is TopTradersError) {
           return const Text("Error");
@@ -48,7 +46,7 @@ class _TopTurnOverState extends State<TopTurnOver> {
     );
   }
 
-  Widget tradersData(BuildContext context, List<TopTurnOverModel> data) {
+  Widget tradersData(BuildContext context, List<TopTradersModel> data) {
     resetPage();
     return Column(children: [
       //Header
@@ -56,8 +54,9 @@ class _TopTurnOverState extends State<TopTurnOver> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           dataHeader("Symbol"),
-          dataHeader("TurnOver"),
           dataHeader("LTP"),
+          dataHeader("Pt. Change"),
+          dataHeader("% Change"),
         ],
       ),
       const Divider(
@@ -79,8 +78,9 @@ class _TopTurnOverState extends State<TopTurnOver> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         dataText(data[index].symbol),
-                        dataText(data[index].turnover.toString()),
                         dataText(data[index].ltp.toString()),
+                        dataText(data[index].pointChange.toString(),color: Colors.green),
+                        dataText(data[index].percentageChange.toString(),color: Colors.green),
                       ],
                     ),
                     const Divider(
@@ -128,16 +128,17 @@ class _TopTurnOverState extends State<TopTurnOver> {
     ]);
   }
 
-  Widget dataText(String text) {
+  Widget dataText(String text, {Color color = Colors.black}) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       height: 30,
-      width: MediaQuery.of(context).size.width * 0.3,
+      width: MediaQuery.of(context).size.width * 0.22,
       child: FittedBox(
           fit: BoxFit.contain,
           child: Text(
             text,
+            style: TextStyle(color: color),
             textAlign: TextAlign.center,
           )),
     );
@@ -148,7 +149,7 @@ class _TopTurnOverState extends State<TopTurnOver> {
       margin: const EdgeInsets.symmetric(horizontal: 5.0),
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       height: 30,
-      width: MediaQuery.of(context).size.width * 0.3,
+      width: MediaQuery.of(context).size.width * 0.22,
       child: FittedBox(
           fit: BoxFit.contain,
           child: Text(

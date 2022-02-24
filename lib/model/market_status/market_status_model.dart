@@ -5,6 +5,6 @@ class MarketStatusModel{
   MarketStatusModel({required this.id,required this.dateTime,required this.isOpen});
   
   factory MarketStatusModel.fromJSON(dynamic json){
-    return MarketStatusModel(id: json['id'], dateTime: DateTime.parse(json['asOf']), isOpen: 'isOpen');
+    return MarketStatusModel(id: json['id'], dateTime: DateTime.parse(json['asOf']), isOpen: json['isOpen']);
   }
 }
