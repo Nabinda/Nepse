@@ -20,6 +20,7 @@ class _TodaysPriceScreenState extends State<TodaysPriceScreen> {
     BlocProvider.of<TodaysPriceBloc>(context)
         .add(FetchTodaysPrice(pageNumber: indexingPage));
   }
+
   void resetPage() {
     _page = <InkWell>[];
   }
@@ -85,7 +86,7 @@ class _TodaysPriceScreenState extends State<TodaysPriceScreen> {
             tableContent(context, data),
             Center(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
                       onTap: () {
@@ -245,9 +246,9 @@ class _TodaysPriceScreenState extends State<TodaysPriceScreen> {
     }
     _page.add(const InkWell(
         child: Padding(
-          padding: EdgeInsets.all(5.0),
-          child: FittedBox(fit: BoxFit.contain, child: Text("...")),
-        )));
+      padding: EdgeInsets.all(5.0),
+      child: FittedBox(fit: BoxFit.contain, child: Text("...")),
+    )));
     for (int pageNo in mid) {
       _page.add(InkWell(
           onTap: () {
@@ -271,9 +272,9 @@ class _TodaysPriceScreenState extends State<TodaysPriceScreen> {
     if (mid.isNotEmpty) {
       _page.add(const InkWell(
           child: Padding(
-            padding: EdgeInsets.all(5.0),
-            child: FittedBox(fit: BoxFit.contain, child: Text("...")),
-          )));
+        padding: EdgeInsets.all(5.0),
+        child: FittedBox(fit: BoxFit.contain, child: Text("...")),
+      )));
     }
     for (int pageNo in last) {
       _page.add(InkWell(

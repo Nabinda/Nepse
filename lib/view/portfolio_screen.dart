@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class PortfolioScreen extends StatelessWidget {
   static const routeName = "/portfolio_screen";
@@ -101,41 +102,55 @@ class PortfolioScreen extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return Card(
-          elevation: 8,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
+        return GestureDetector(
+          onLongPress: () => showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: const Text("Delete?"),
+              content: ButtonBar(
+                children: [
+                  ElevatedButton(onPressed: () {}, child: const Text('Delete')),
+                  ElevatedButton(onPressed: () {}, child: const Text('Cancel'))
+                ],
+              ),
+            ),
           ),
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 10.0),
-            padding: const EdgeInsets.all(5.0),
-            child: Theme(
-              data:
-                  Theme.of(context).copyWith(dividerColor: Colors.transparent),
-              child: ExpansionTile(
-                title: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        individualInfoCol('HDL', 'Unit: 10, LTP: 5000'),
-                        individualInfoCol('Rs.5000', 'Rs. 100 ')
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+          child: Card(
+            elevation: 8,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
+              padding: const EdgeInsets.all(5.0),
+              child: Theme(
+                data: Theme.of(context)
+                    .copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  title: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          individualInfoCol('HDL', 'Unit: 10, LTP: 5000'),
+                          individualInfoCol('Rs.5000', 'Rs. 100 ')
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                  textColor: Colors.red,
+                  collapsedTextColor: Colors.black,
+                  children: <Widget>[
+                    individualInfoFullRow('Scrip', 'HDL'),
+                    individualInfoFullRow('Investment', '50000'),
+                    individualInfoFullRow('Today\'s Profit', '500'),
+                    individualInfoFullRow('Profit Percentage', '3%'),
+                    individualInfoFullRow('Overall Profit', '50000'),
                   ],
                 ),
-                textColor: Colors.red,
-                collapsedTextColor: Colors.black,
-                children: <Widget>[
-                  individualInfoFullRow('Scrip', 'HDL'),
-                  individualInfoFullRow('Investment', '50000'),
-                  individualInfoFullRow('Today\'s Profit', '500'),
-                  individualInfoFullRow('Profit Percentage', '3%'),
-                  individualInfoFullRow('Overall Profit', '50000'),
-                ],
               ),
             ),
           ),
