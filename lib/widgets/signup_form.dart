@@ -5,20 +5,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepse/style/theme.dart' as Style;
-import 'package:nepse/view/signup.dart';
 
-class LoginForm extends StatefulWidget {
+class SignupForm extends StatefulWidget {
   final UserRepository userRepository;
-  const LoginForm({Key? key, required this.userRepository})
+  const SignupForm({Key? key, required this.userRepository})
       : super(key: key);
 
   @override
-  State<LoginForm> createState() => _LoginFormState(userRepository);
+  State<SignupForm> createState() => _SignupFormState(userRepository);
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _SignupFormState extends State<SignupForm> {
   final UserRepository userRepository;
-  _LoginFormState(this.userRepository);
+  _SignupFormState(this.userRepository);
+  final _nameController = TextEditingController();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -60,7 +60,7 @@ class _LoginFormState extends State<LoginForm> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
-                          Text("Share/Stocks", style: TextStyle(
+                          Text("Signup", style: TextStyle(
                               color: Style.Colors.mainColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 24.0
@@ -68,12 +68,44 @@ class _LoginFormState extends State<LoginForm> {
                           SizedBox(
                             height: 5.0,
                           ),
-                          Text("Portfolio Management", style: TextStyle(
+                          Text("creating a new account.", style: TextStyle(
                               fontSize: 10.0,
                               color: Colors.black38
                           ),)
                         ],
                       )
+                  ),
+                  const SizedBox(
+                    height: 30.0,
+                  ),
+                  TextFormField(
+                    style: const TextStyle(
+                        fontSize: 14.0,
+                        color: Style.Colors.titleColor,
+                        fontWeight: FontWeight.bold),
+                    controller: _usernameController,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(EvaIcons.emailOutline, color: Colors.black26),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.black12),
+                          borderRadius: BorderRadius.circular(30.0)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Style.Colors.mainColor),
+                          borderRadius: BorderRadius.circular(30.0)),
+                      contentPadding: const EdgeInsets.only(
+                          left: 10.0, right: 10.0),
+                      labelText: "Full Name",
+                      hintStyle: const TextStyle(
+                          fontSize: 12.0,
+                          color: Style.Colors.grey,
+                          fontWeight: FontWeight.w500),
+                      labelStyle: const TextStyle(
+                          fontSize: 12.0,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    autocorrect: false,
                   ),
                   const SizedBox(
                     height: 30.0,
@@ -204,7 +236,6 @@ class _LoginFormState extends State<LoginForm> {
                               ),
                               GestureDetector(
                                   onTap: () {
-                                    MaterialPageRoute(builder: (context) => SignupScreen(userRepository: userRepository));
 
                                   },
                                   child: const Text(

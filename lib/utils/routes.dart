@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:nepse/repositories/repositories.dart';
 import 'package:nepse/view/brokers_screen.dart';
 import 'package:nepse/view/company_screens.dart';
 import 'package:nepse/view/corporate_disclosures.dart';
@@ -7,6 +8,7 @@ import 'package:nepse/view/market_capitalization.dart';
 import 'package:nepse/view/news_screen.dart';
 import 'package:nepse/view/notice_screen.dart';
 import 'package:nepse/view/portfolio_screen.dart';
+import 'package:nepse/view/signup.dart';
 import 'package:nepse/view/todays_price.dart';
 import 'package:nepse/view/top_traders_screen.dart';
 import 'package:nepse/view/watchlist_screen.dart';
@@ -24,6 +26,7 @@ class Routes{
   static const String notice = NoticeScreen.routeName;
   static const String todayPrice = TodaysPriceScreen.routeName;
   static const String topTraders = TopTradersScreen.routeName;
+  static const String signup = SignupScreen.routeName;
 
   static final routes = <String, WidgetBuilder>{
     portfolio: (BuildContext context) => const PortfolioScreen(),

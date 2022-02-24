@@ -18,7 +18,7 @@ import 'repositories/repositories.dart';
 
 void main() {
   final userRepository = UserRepository();
-  runApp(MyApp(userRepository: userRepository,));
+  runApp(MyApp(userRepository: userRepository));
 }
 
 class MyApp extends StatelessWidget {
@@ -47,7 +47,13 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: MyHomePage(title: 'Nepse', userRepository: userRepository),
+        home : BlocProvider<AuthenticationBloc>(
+          create: (context) {
+            return AuthenticationBloc(userRepository: userRepository)
+              ..add(AppStarted());
+          },
+          child: MyHomePage(title: 'Nepse', userRepository: userRepository),
+        ),
         routes: Routes.routes,
       ),
     );
