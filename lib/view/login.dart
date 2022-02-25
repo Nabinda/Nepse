@@ -8,20 +8,26 @@ import 'package:nepse/widgets/login_form.dart';
 class LoginScreen extends StatelessWidget {
   final UserRepository userRepository;
 
-  const LoginScreen({Key? key, required this.userRepository})
-      : super(key: key);
+  const LoginScreen({Key? key, required this.userRepository}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider(
-        create: (context) {
-          return LoginBloc(
-            authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-            userRepository: userRepository,
-          );
-        },
-        child: LoginForm(userRepository: userRepository,),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: BlocProvider(
+            create: (context) {
+              return LoginBloc(
+                authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+                userRepository: userRepository,
+              );
+            },
+            child: LoginForm(
+              userRepository: userRepository,
+            ),
+          ),
+        ),
       ),
     );
   }

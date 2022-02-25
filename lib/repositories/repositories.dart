@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:nepse/model/auth/auth_model.dart';
@@ -40,13 +38,14 @@ class UserRepository {
     return authModel;
   }
 
-  Future<String> register(String name, String email, String password) async {
+  Future<dynamic> register(String name, String email, String password) async {
     Response response = await _dio.post(registerUrl, data: {
       "name": name,
       "email": email,
       "password": password,
     });
-    return response.data;
+    AuthModel authModel = AuthModel.fromJson(response.data);
+    return authModel;
   }
 
 }

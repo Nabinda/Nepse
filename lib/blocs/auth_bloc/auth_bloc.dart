@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:nepse/repositories/repositories.dart';
-import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 import 'auth.dart';
 

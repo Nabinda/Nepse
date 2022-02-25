@@ -67,12 +67,10 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title, required this.userRepository}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState(userRepository);
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final UserRepository userRepository;
-  _MyHomePageState(this.userRepository);
 
   @override
   void initState() {
@@ -92,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   return const LandingScreen();
                 }
                 if (state is AuthenticationUnauthenticated) {
-                  return LoginScreen(userRepository: userRepository);
+                  return LoginScreen(userRepository: widget.userRepository);
                 }
 
                 if (state is AuthenticationLoading) {

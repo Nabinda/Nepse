@@ -5,19 +5,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepse/style/theme.dart' as Style;
+import 'package:nepse/view/login.dart';
 
 class SignupForm extends StatefulWidget {
   final UserRepository userRepository;
-  const SignupForm({Key? key, required this.userRepository})
-      : super(key: key);
+  const SignupForm({Key? key, required this.userRepository}) : super(key: key);
 
   @override
-  State<SignupForm> createState() => _SignupFormState(userRepository);
+  State<SignupForm> createState() => _SignupFormState();
 }
 
 class _SignupFormState extends State<SignupForm> {
-  final UserRepository userRepository;
-  _SignupFormState(this.userRepository);
   final _nameController = TextEditingController();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -25,13 +23,18 @@ class _SignupFormState extends State<SignupForm> {
   @override
   Widget build(BuildContext context) {
     _onLoginButtonPressed() {
-      BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(email: _usernameController.text, password: _passwordController.text,),);
+      BlocProvider.of<LoginBloc>(context).add(
+        LoginButtonPressed(
+          email: _usernameController.text,
+          password: _passwordController.text,
+        ),
+      );
     }
 
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginFailure) {
-          Scaffold.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text("Login failed."),
               backgroundColor: Colors.red,
@@ -39,7 +42,7 @@ class _SignupFormState extends State<SignupForm> {
           );
         }
         if (state is LoginSuccess) {
-          Scaffold.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text("Login success."),
               backgroundColor: Colors.green,
@@ -60,21 +63,23 @@ class _SignupFormState extends State<SignupForm> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
-                          Text("Signup", style: TextStyle(
-                              color: Style.Colors.mainColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24.0
-                          ),),
+                          Text(
+                            "Signup",
+                            style: TextStyle(
+                                color: Style.Colors.mainColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24.0),
+                          ),
                           SizedBox(
                             height: 5.0,
                           ),
-                          Text("creating a new account.", style: TextStyle(
-                              fontSize: 10.0,
-                              color: Colors.black38
-                          ),)
+                          Text(
+                            "creating a new account.",
+                            style: TextStyle(
+                                fontSize: 10.0, color: Colors.black38),
+                          )
                         ],
-                      )
-                  ),
+                      )),
                   const SizedBox(
                     height: 30.0,
                   ),
@@ -83,18 +88,20 @@ class _SignupFormState extends State<SignupForm> {
                         fontSize: 14.0,
                         color: Style.Colors.titleColor,
                         fontWeight: FontWeight.bold),
-                    controller: _usernameController,
+                    controller: _nameController,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      prefixIcon: const Icon(EvaIcons.emailOutline, color: Colors.black26),
+                      prefixIcon: const Icon(EvaIcons.emailOutline,
+                          color: Colors.black26),
                       enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(color: Colors.black12),
                           borderRadius: BorderRadius.circular(30.0)),
                       focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Style.Colors.mainColor),
+                          borderSide:
+                              const BorderSide(color: Style.Colors.mainColor),
                           borderRadius: BorderRadius.circular(30.0)),
-                      contentPadding: const EdgeInsets.only(
-                          left: 10.0, right: 10.0),
+                      contentPadding:
+                          const EdgeInsets.only(left: 10.0, right: 10.0),
                       labelText: "Full Name",
                       hintStyle: const TextStyle(
                           fontSize: 12.0,
@@ -118,15 +125,17 @@ class _SignupFormState extends State<SignupForm> {
                     controller: _usernameController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                      prefixIcon: const Icon(EvaIcons.emailOutline, color: Colors.black26),
+                      prefixIcon: const Icon(EvaIcons.emailOutline,
+                          color: Colors.black26),
                       enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(color: Colors.black12),
                           borderRadius: BorderRadius.circular(30.0)),
                       focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Style.Colors.mainColor),
+                          borderSide:
+                              const BorderSide(color: Style.Colors.mainColor),
                           borderRadius: BorderRadius.circular(30.0)),
-                      contentPadding: const EdgeInsets.only(
-                          left: 10.0, right: 10.0),
+                      contentPadding:
+                          const EdgeInsets.only(left: 10.0, right: 10.0),
                       labelText: "E-Mail",
                       hintStyle: const TextStyle(
                           fontSize: 12.0,
@@ -150,15 +159,19 @@ class _SignupFormState extends State<SignupForm> {
                     controller: _passwordController,
                     decoration: InputDecoration(
                       fillColor: Colors.white,
-                      prefixIcon: const Icon(EvaIcons.lockOutline, color: Colors.black26,),
+                      prefixIcon: const Icon(
+                        EvaIcons.lockOutline,
+                        color: Colors.black26,
+                      ),
                       enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(color: Colors.black12),
                           borderRadius: BorderRadius.circular(30.0)),
                       focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Style.Colors.mainColor),
+                          borderSide:
+                              const BorderSide(color: Style.Colors.mainColor),
                           borderRadius: BorderRadius.circular(30.0)),
-                      contentPadding: const EdgeInsets.only(
-                          left: 10.0, right: 10.0),
+                      contentPadding:
+                          const EdgeInsets.only(left: 10.0, right: 10.0),
                       labelText: "Password",
                       hintStyle: const TextStyle(
                           fontSize: 12.0,
@@ -182,35 +195,39 @@ class _SignupFormState extends State<SignupForm> {
                       children: <Widget>[
                         SizedBox(
                             height: 45,
-                            child: state is LoginLoading ?
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Center(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: const [
-                                        SizedBox(
-                                          height: 25.0,
-                                          width: 25.0,
-                                          child: CupertinoActivityIndicator(),
-                                        )
-                                      ],
-                                    ))
-                              ],
-                            ) :
-                            RaisedButton(
-                                color: Style.Colors.mainColor,
-                                disabledColor: Style.Colors.mainColor,
-                                disabledTextColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                ),
-                                onPressed: _onLoginButtonPressed,
-                                child: const Text("LOG IN", style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.white))
-                            )
-                        ),
+                            child: state is LoginLoading
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Center(
+                                          child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          SizedBox(
+                                            height: 25.0,
+                                            width: 25.0,
+                                            child: CupertinoActivityIndicator(),
+                                          )
+                                        ],
+                                      ))
+                                    ],
+                                  )
+                                : RaisedButton(
+                                    color: Style.Colors.mainColor,
+                                    disabledColor: Style.Colors.mainColor,
+                                    disabledTextColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                    onPressed: _onLoginButtonPressed,
+                                    child: const Text("SIGN UP",
+                                        style: TextStyle(
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white)))),
                       ],
                     ),
                   ),
@@ -218,7 +235,6 @@ class _SignupFormState extends State<SignupForm> {
                     height: 20.0,
                   ),
                   Expanded(
-
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
@@ -228,7 +244,7 @@ class _SignupFormState extends State<SignupForm> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               const Text(
-                                "Don't have an account?",
+                                "Already have an account?",
                                 style: TextStyle(color: Style.Colors.grey),
                               ),
                               const Padding(
@@ -236,10 +252,15 @@ class _SignupFormState extends State<SignupForm> {
                               ),
                               GestureDetector(
                                   onTap: () {
-
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => LoginScreen(
+                                                userRepository:
+                                                    widget.userRepository)));
                                   },
                                   child: const Text(
-                                    "Register",
+                                    "Login",
                                     style: TextStyle(
                                         color: Style.Colors.mainColor,
                                         fontWeight: FontWeight.bold),

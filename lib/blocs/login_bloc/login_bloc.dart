@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:nepse/blocs/auth_bloc/auth.dart';
 import 'package:nepse/repositories/repositories.dart';
-import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
 part 'login_event.dart';

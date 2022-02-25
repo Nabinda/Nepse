@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:nepse/repositories/repositories.dart';
 import 'package:nepse/view/brokers_screen.dart';
 import 'package:nepse/view/company_screens.dart';
 import 'package:nepse/view/corporate_disclosures.dart';

@@ -1,8 +1,6 @@
 import 'package:nepse/model/auth/tokens_model.dart';
 import 'package:nepse/model/user/user_model.dart';
 
-import 'access_model.dart';
-
 class AuthModel {
   User? user;
   Tokens? tokens;
