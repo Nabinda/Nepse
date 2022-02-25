@@ -12,6 +12,7 @@ class AuthenticationBloc
     on<AppStarted>(onAppStarted);
     on<LoggedIn>(onLoggedIn);
     on<LoggedOut>(onLoggedOut);
+    on<SignedUp>(onSignedUp);
   }
 
   AuthenticationState get initialState => AuthenticationUninitialized();
@@ -32,6 +33,15 @@ class AuthenticationBloc
     LoggedIn event,
     Emitter<AuthenticationState> emit,
   ) async {
+    emit(AuthenticationLoading());
+    await userRepository.persistToken(event.token);
+    emit(AuthenticationAuthenticated());
+  }
+
+  void onSignedUp(
+      SignedUp event,
+      Emitter<AuthenticationState> emit,
+      ) async {
     emit(AuthenticationLoading());
     await userRepository.persistToken(event.token);
     emit(AuthenticationAuthenticated());

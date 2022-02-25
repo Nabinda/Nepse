@@ -1,4 +1,4 @@
-import 'package:nepse/blocs/login_bloc/login_bloc.dart';
+import 'package:nepse/blocs/signup_bloc/signup_bloc.dart';
 import 'package:nepse/repositories/repositories.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,35 +22,36 @@ class _SignupFormState extends State<SignupForm> {
 
   @override
   Widget build(BuildContext context) {
-    _onLoginButtonPressed() {
-      BlocProvider.of<LoginBloc>(context).add(
-        LoginButtonPressed(
+    _onSignupButtonPressed() {
+      BlocProvider.of<SignupBloc>(context).add(
+        SignupButtonPressed(
+          name: _nameController.text,
           email: _usernameController.text,
           password: _passwordController.text,
         ),
       );
     }
 
-    return BlocListener<LoginBloc, LoginState>(
+    return BlocListener<SignupBloc, SignupState>(
       listener: (context, state) {
-        if (state is LoginFailure) {
+        if (state is SignupFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text("Login failed."),
+              content: Text("Signup failed."),
               backgroundColor: Colors.red,
             ),
           );
         }
-        if (state is LoginSuccess) {
+        if (state is SignupSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text("Login success."),
+              content: Text("Signup success."),
               backgroundColor: Colors.green,
             ),
           );
         }
       },
-      child: BlocBuilder<LoginBloc, LoginState>(
+      child: BlocBuilder<SignupBloc, SignupState>(
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.only(right: 20.0, left: 20.0, top: 80.0),
@@ -195,7 +196,7 @@ class _SignupFormState extends State<SignupForm> {
                       children: <Widget>[
                         SizedBox(
                             height: 45,
-                            child: state is LoginLoading
+                            child: state is SignupLoading
                                 ? Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -222,7 +223,7 @@ class _SignupFormState extends State<SignupForm> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(30.0),
                                     ),
-                                    onPressed: _onLoginButtonPressed,
+                                    onPressed: _onSignupButtonPressed,
                                     child: const Text("SIGN UP",
                                         style: TextStyle(
                                             fontSize: 12.0,

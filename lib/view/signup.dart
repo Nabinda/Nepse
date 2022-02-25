@@ -1,5 +1,6 @@
 import 'package:nepse/blocs/auth_bloc/auth.dart';
 import 'package:nepse/blocs/login_bloc/login_bloc.dart';
+import 'package:nepse/blocs/signup_bloc/signup_bloc.dart';
 import 'package:nepse/repositories/repositories.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +20,7 @@ class SignupScreen extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
           child: BlocProvider(
             create: (context) {
-              return LoginBloc(
+              return SignupBloc(
                 authenticationBloc:
                     BlocProvider.of<AuthenticationBloc>(context),
                 userRepository: userRepository,
